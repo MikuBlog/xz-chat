@@ -1,4 +1,4 @@
-# xz-chat
+# chat
 
 ## Project setup
 ```
