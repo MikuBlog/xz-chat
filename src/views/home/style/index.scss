@@ -1,0 +1,126 @@
+.home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.home::after {
+  content: " ";
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -2;
+  filter: blur(10px);
+  background-image:url(https://myinterface.xuanzai.top/getPicture?type=2233&id=34);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.chat-box {
+  position: relative;
+  width: 70%;
+  height: 700px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fefefe;
+  border-radius: 10px;
+}
+
+.left-list {
+  position: relative;
+  float: left;
+  width: 250px;
+  height: 100%;
+  background: #2f4055;
+  .header {
+    position: relative;
+    color: #fefefe;
+    .avatar {
+      position: relative;
+      top: .5rem;
+      margin: .5rem 1.5rem 0 1rem;
+    }
+    .name {
+      position: relative;
+      font-size: 1.2rem;
+      top: -.5rem;
+    }
+  }
+}
+.right-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-left: 250px;
+  .content-list {
+    position: relative;
+    flex: 1;
+    .list {
+      position: relative;
+      margin: 1rem 0 0 .5rem;
+      .card {
+        position: relative;
+        display: inline-block;
+        margin-left: .5rem;
+      }
+    }
+    .menu-horizontal-scrollbar {
+      ::v-deep {
+        .el-scrollbar__wrap {
+          overflow-x: hidden;
+        } 
+      }
+    }
+  }
+  .input-box {
+    position: relative;
+    height: 233px;
+    .submit {
+      position: relative;
+      border-top: 1px solid rgb(236, 236, 236);
+      padding: 10px 0;
+      margin-top: .5rem 0;
+    }
+  }
+}
+
+@media screen and (max-width: 2560px) {
+  .chat-box {
+    position: relative;
+    width: 900px;
+    height: 900px;
+  }
+}
+
+@media screen and (max-width: 1920px) {
+  .chat-box {
+    width: 70%;
+    height: 700px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .chat-box {
+    width: 600px;
+    height: 600px;
+  }
+  .left-list {
+    width: 200px;
+    .header {
+      .name {
+        font-size: 1rem;
+      }
+    }
+  }
+  .right-list {
+    margin-left: 200px;
+  }
+}
