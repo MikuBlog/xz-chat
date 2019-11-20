@@ -4,17 +4,32 @@
       <div class="left-list">
         <div class="header">
           <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
-          <span class="name">{{ name }}</span>
+          <div class="profile">
+            <div class="name">我</div>
+            <span class="name" style="font-size: 1rem; color: #aaa">聊天名称：{{ name }}</span>
+          </div>
         </div>
         <el-divider></el-divider>
+        <div class="customer-list">
+          <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
+              <div class="list" v-for="items in customerList">
+                <el-avatar :size="50" :src="items.avatar" fit="cover" class="avatar"></el-avatar>
+                <span class="name">{{ items.name }}</span>
+              </div>
+            </el-scrollbar>
+        </div>
       </div>
       <div class="right-list">
         <div class="content-list">
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
-            <div class="list">
+            <div class="list" v-for="items in contentList" :style="{
+              textAlign: items.type === 'me' ? 'left' : 'right',
+              display: items.type === 'me' ? 'block' : 'flex',
+              flexDirection: items.type === 'me' ? 'row' : 'row-reverse',
+            }">
               <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
               <el-card shadow="always" class="card">
-                总是显示
+                {{items.value}}
               </el-card>
             </div>
           </el-scrollbar>

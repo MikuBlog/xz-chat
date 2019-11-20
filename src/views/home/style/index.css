@@ -40,23 +40,58 @@
   width: 250px;
   height: 100%;
   background: #2f4055;
+  border-radius: 10px;
 }
 
 .left-list .header {
   position: relative;
+  display: flex;
   color: #fefefe;
+}
+
+.left-list .header .profile {
+  position: relative;
+  top: 1rem;
 }
 
 .left-list .header .avatar {
   position: relative;
-  top: .5rem;
-  margin: .5rem 1.5rem 0 1rem;
+  top: 0.5rem;
+  margin: 0.5rem 1.5rem 0 1rem;
 }
 
 .left-list .header .name {
   position: relative;
   font-size: 1.2rem;
-  top: -.5rem;
+}
+
+.left-list .customer-list {
+  position: relative;
+}
+
+.left-list .customer-list .list {
+  position: relative;
+  border-bottom: 1px solid #505050;
+  padding-bottom: 20px;
+  color: #fefefe;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.left-list .customer-list .list .avatar {
+  position: relative;
+  top: 0.5rem;
+  margin: 0.5rem 1.5rem 0 1rem;
+}
+
+.left-list .customer-list .list .name {
+  position: relative;
+  font-size: 1.2rem;
+  top: -0.5rem;
+}
+
+.left-list .customer-list .list:hover {
+  background: #202020;
 }
 
 .right-list {
@@ -65,22 +100,23 @@
   flex-direction: column;
   height: 100%;
   margin-left: 250px;
+  overflow: hidden;
 }
 
 .right-list .content-list {
   position: relative;
-  flex: 1;
+  height: 70%;
 }
 
 .right-list .content-list .list {
   position: relative;
-  margin: 1rem 0 0 .5rem;
+  margin: 1rem 0 0 0.5rem;
 }
 
 .right-list .content-list .list .card {
   position: relative;
   display: inline-block;
-  margin-left: .5rem;
+  margin: 0.5rem;
 }
 
 .right-list .content-list .menu-horizontal-scrollbar ::v-deep .el-scrollbar__wrap {
@@ -89,43 +125,50 @@
 
 .right-list .input-box {
   position: relative;
-  height: 233px;
+  height: 30%;
 }
 
 .right-list .input-box .submit {
   position: relative;
   border-top: 1px solid #ececec;
   padding: 10px 0;
-  margin-top: .5rem 0;
+  margin-top: 0.5rem 0;
 }
 
 @media screen and (max-width: 2560px) {
   .chat-box {
     position: relative;
-    width: 900px;
+    width: 950px;
     height: 900px;
   }
 }
 
 @media screen and (max-width: 1920px) {
   .chat-box {
-    width: 70%;
-    height: 700px;
+    width: 850px;
+    height: 800px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .chat-box {
+    width: 800px;
+    height: 750px;
   }
 }
 
 @media screen and (max-width: 1080px) {
   .chat-box {
-    width: 600px;
-    height: 600px;
+    width: 750px;
+    height: 700px;
   }
   .left-list {
-    width: 200px;
+    width: 230px;
   }
   .left-list .header .name {
     font-size: 1rem;
   }
   .right-list {
-    margin-left: 200px;
+    margin-left: 230px;
   }
 }

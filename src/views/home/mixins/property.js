@@ -34,6 +34,23 @@ export default {
       }, {
         value: "旋仔牛B",
         type: "opposite"
+      }],
+      customerList: [{
+        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
+        name: "旋仔的好友",
+        isOnline: true
+      }, {
+        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
+        name: "旋仔的好友",
+        isOnline: true
+      }, {
+        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
+        name: "旋仔的好友",
+        isOnline: false
+      }, {
+        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
+        name: "旋仔的好友",
+        isOnline: false
       }]
     }
   }

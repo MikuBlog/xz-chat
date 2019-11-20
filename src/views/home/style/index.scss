@@ -16,7 +16,7 @@
   bottom: 0;
   z-index: -2;
   filter: blur(10px);
-  background-image:url(https://myinterface.xuanzai.top/getPicture?type=2233&id=34);
+  background-image: url(https://myinterface.xuanzai.top/getPicture?type=2233&id=34);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -39,18 +39,47 @@
   width: 250px;
   height: 100%;
   background: #2f4055;
+  border-radius: 10px;
   .header {
     position: relative;
+    display: flex;
     color: #fefefe;
+    .profile {
+      position: relative;
+      top: 1rem;
+    }
     .avatar {
       position: relative;
-      top: .5rem;
-      margin: .5rem 1.5rem 0 1rem;
+      top: 0.5rem;
+      margin: 0.5rem 1.5rem 0 1rem;
     }
     .name {
       position: relative;
       font-size: 1.2rem;
-      top: -.5rem;
+    }
+  }
+  .customer-list {
+    position: relative;
+    .list {
+      position: relative;
+      border-bottom: 1px solid rgb(80, 80, 80);
+      padding-bottom: 20px;
+      color: #fefefe;
+      transition: .3s;
+      cursor: pointer;
+      .avatar {
+        position: relative;
+        top: 0.5rem;
+        margin: 0.5rem 1.5rem 0 1rem;
+      }
+      .name {
+        position: relative;
+        font-size: 1.2rem;
+        top: -0.5rem;
+      }
+    }
+    .list:hover {
+      background: rgb(32, 32, 32);
     }
   }
 }
@@ -60,34 +89,35 @@
   flex-direction: column;
   height: 100%;
   margin-left: 250px;
+  overflow: hidden;
   .content-list {
     position: relative;
-    flex: 1;
+    height: 70%;
     .list {
       position: relative;
-      margin: 1rem 0 0 .5rem;
+      margin: 1rem 0 0 0.5rem;
       .card {
         position: relative;
         display: inline-block;
-        margin-left: .5rem;
+        margin: 0.5rem;
       }
     }
     .menu-horizontal-scrollbar {
       ::v-deep {
         .el-scrollbar__wrap {
           overflow-x: hidden;
-        } 
+        }
       }
     }
   }
   .input-box {
     position: relative;
-    height: 233px;
+    height: 30%;
     .submit {
       position: relative;
       border-top: 1px solid rgb(236, 236, 236);
       padding: 10px 0;
-      margin-top: .5rem 0;
+      margin-top: 0.5rem 0;
     }
   }
 }
@@ -95,25 +125,32 @@
 @media screen and (max-width: 2560px) {
   .chat-box {
     position: relative;
-    width: 900px;
+    width: 950px;
     height: 900px;
   }
 }
 
 @media screen and (max-width: 1920px) {
   .chat-box {
-    width: 70%;
-    height: 700px;
+    width: 850px;
+    height: 800px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .chat-box {
+    width: 800px;
+    height: 750px;
   }
 }
 
 @media screen and (max-width: 1080px) {
   .chat-box {
-    width: 600px;
-    height: 600px;
+    width: 750px;
+    height: 700px;
   }
   .left-list {
-    width: 200px;
+    width: 230px;
     .header {
       .name {
         font-size: 1rem;
@@ -121,6 +158,6 @@
     }
   }
   .right-list {
-    margin-left: 200px;
+    margin-left: 230px;
   }
 }
