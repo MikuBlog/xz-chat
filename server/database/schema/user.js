@@ -4,6 +4,7 @@ const Schema = new mongoose.Schema({
   password: String,
   age: String,
   email: String,
-  phone: String
+  phone: String,
+  isonline: Boolean
 })
 module.exports = mongoose.model('user_list', Schema)
