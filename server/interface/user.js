@@ -10,6 +10,7 @@ function register(req, res) {
     })
     return
   }
+  data.isonline = false
   data.key = new Date().getTime()
   new Promise((resolve, reject) => {
     accountSchema

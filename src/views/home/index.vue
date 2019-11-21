@@ -19,7 +19,7 @@
         <div class="customer-list">
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
             <div class="list" @click="connectWebsocketInGroup(1)">
-              <el-avatar :size="50" src="https://myinterface.xuanzai.top/getPicture?type=%E5%A4%B4%E5%83%8F&id=12" fit="cover" class="avatar"></el-avatar>
+              <el-avatar :size="50" src="http://myinterface.xuanzai.top/getPicture?type=%E5%A4%B4%E5%83%8F&id=12" fit="cover" class="avatar"></el-avatar>
               <span class="name" style="color: #fefefe">
                 群聊
               </span>
