@@ -71,6 +71,7 @@
 
 .left-list .customer-list .list {
   position: relative;
+  display: flex;
   border-bottom: 1px solid #505050;
   padding-bottom: 20px;
   color: #fefefe;
@@ -80,6 +81,7 @@
 
 .left-list .customer-list .list .avatar {
   position: relative;
+  width: 50px;
   top: 0.5rem;
   margin: 0.5rem 1.5rem 0 1rem;
 }
@@ -87,7 +89,8 @@
 .left-list .customer-list .list .name {
   position: relative;
   font-size: 1.2rem;
-  top: -0.5rem;
+  margin-top: 1.5rem;
+  flex: 1;
 }
 
 .left-list .customer-list .list:hover {
@@ -103,9 +106,17 @@
   overflow: hidden;
 }
 
+.right-list .header-profile {
+  position: relative;
+  text-indent: 1rem;
+  line-height: 4.5rem;
+  height: 10%;
+  box-shadow: 0 2px 2px #cfcfcf;
+}
+
 .right-list .content-list {
   position: relative;
-  height: 70%;
+  height: 65%;
 }
 
 .right-list .content-list .list {
@@ -119,13 +130,24 @@
   margin: 0.5rem;
 }
 
+.right-list .content-list .list .card ::v-deep .el-card__body {
+  padding: 10px 12px;
+}
+
+.right-list .content-list .list .card .date-time {
+  position: relative;
+  font-size: .8rem;
+  padding-bottom: .5rem;
+  color: #666;
+}
+
 .right-list .content-list .menu-horizontal-scrollbar ::v-deep .el-scrollbar__wrap {
   overflow-x: hidden;
 }
 
 .right-list .input-box {
   position: relative;
-  height: 30%;
+  height: 25%;
 }
 
 .right-list .input-box .submit {

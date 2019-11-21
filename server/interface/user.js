@@ -1,19 +1,21 @@
+const mongoose = require('mongoose')
 const accountSchema = require('../database/schema/user')
 
 // 注册
 function register(req, res) {
   const data = req.body
-  if (!data.account || !data.password) {
+  if (!data.username || !data.password) {
     res.send({
       status: "error",
       msg: "请填写用户名和密码"
     })
     return
   }
+  data.key = new Date().getTime()
   new Promise((resolve, reject) => {
     accountSchema
       .find(
-        { account: data.account },
+        { username: data.username },
         (err, result) => {
           if (err) {
             res.send({
@@ -28,7 +30,6 @@ function register(req, res) {
         }
       )
   }).then(() => {
-    data.isonline = true
     accountSchema.create(data, err => {
       if (err) {
         res.send({
@@ -52,17 +53,18 @@ function register(req, res) {
 
 // 登录
 function login(req, res) {
-  const data = req.data
-  if (!data.account || !data.password) {
+  const data = req.body
+  if (!data.username || !data.password) {
     res.send({
       status: "error",
       msg: "请填写用户名和密码"
     })
     return
   }
-  accountSchema
+  new Promise((resolve, reject) => {
+    accountSchema
     .find(
-      { account: data.account, password: data.password },
+      { username: data.username, password: data.password },
       (err, result) => {
         if (err) {
           res.send({
@@ -71,10 +73,7 @@ function login(req, res) {
           })
           return
         } else if (result.length > 0) {
-          res.send({
-            status: "ok",
-            msg: "登录成功"
-          })
+          resolve(result[0])
         } else {
           res.send({
             status: "error",
@@ -83,6 +82,32 @@ function login(req, res) {
         }
       }
     )
+  }).then((result) => {
+    return new Promise((resolve, reject) => {
+      accountSchema
+        .updateOne(
+          { username: data.username },
+          { $set: { isonline: true } },
+          err => {
+            if(err) {
+              reject("服务器出错")
+            }else {
+              res.send({
+                status: "ok",
+                msg: "登录成功",
+                data: result
+              })
+              resolve()
+            }
+          }
+        )
+    })
+  }).catch(e => {
+    res.send({
+      status: "error",
+      msg: e
+    })
+  })
 }
 
 // 用户登出
@@ -97,7 +122,7 @@ function logout(req, res) {
   }
   accountSchema
     .updateOne(
-      { id: data.id },
+      { _id: data.id },
       { $set: { isonline: false } },
       err => {
         if (err) {
@@ -107,7 +132,7 @@ function logout(req, res) {
           })
         } else {
           res.send({
-            status: "error",
+            status: "ok",
             msg: "登出成功"
           })
         }
@@ -116,24 +141,24 @@ function logout(req, res) {
 }
 
 function getUserList(req, res) {
+  const data = req.urlQuery
   accountSchema
-    .find(
-      { isonline: true },
-      (err, result) => {
-        if(err) {
-          res.send({
-            status: "error",
-            msg: "获取用户列表失败"
-          })
-        }else {
-          res.send({
-            status: "ok",
-            msg: "获取用户列表成功",
-            list: result
-          })
-        }
+    .$where(`this.username != "${data.username}"`)
+    .find({ isonline: data.isonline })
+    .exec((err, result) => {
+      if (err) {
+        res.send({
+          status: "error",
+          msg: "获取用户列表失败"
+        })
+      } else {
+        res.send({
+          status: "ok",
+          msg: "获取用户列表成功",
+          list: result
+        })
       }
-    )
+    })
 }
 
 module.exports = {

@@ -1,6 +1,10 @@
 // 连接数据库
 require('./database/connect')
 
+// 引入websocket
+require('./socket/socketInFace')
+require('./socket/socketInRoom')
+
 // 后台框架
 const express = require('express')
 /*中间件*/
@@ -30,22 +34,22 @@ app.all('*', function(req, res, next) {
 /*用户接口*/
 
 // 获取用户列表
-app.get('/api/user/getuserlist', account.getUserList)
+app.get('/api/user/getuserlist', urlQuery.urlQuery, account.getUserList)
 // 用户注册
 app.post('/api/user/register', bodyParser.urlencoded({ extended: false }), account.register)
 // 用户登录
 app.post('/api/user/login', bodyParser.urlencoded({ extended: false }), account.login)
 // 用户登出
-app.post('/api/user/login', urlQuery.urlQuery, account.login)
+app.get('/api/user/logout', urlQuery.urlQuery, account.logout)
 
 
 /*聊天记录接口*/
 
 // 获取聊天记录
-app.post('/api/chat/getrecord', urlQuery.urlQuery, chatRecord.getRecord)
+app.get('/api/chat/getrecord', urlQuery.urlQuery, chatRecord.getRecord)
 // 撤回聊天记录
 app.post('/api/chat/withdrawrecord', urlQuery.urlQuery, chatRecord.withdrawRecord)
 // 记录聊天记录
-app.post('/api/chat/record', bodyParser.urlencoded({ extended: false }), chatRecord.record)
+app.post('/api/chat/insertrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertRecord)
 
 app.listen(8888)

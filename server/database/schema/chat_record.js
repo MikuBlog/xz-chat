@@ -4,6 +4,7 @@ const Schema = new mongoose.Schema({
   sender: String,
   recipient: String,
   createtime: Date,
-  ishow: Boolean
+  isshow: Boolean,
+  mapkey: String 
 })
 module.exports = mongoose.model('chat_record', Schema)

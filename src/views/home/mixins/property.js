@@ -1,57 +1,17 @@
 export default {
   data() {
     return {
-      name: "旋仔",
+      user: {},
+      chatObj: {},
+      socketInFace: "",
+      socketInGroup: "",
+      socketInRoom: "",
       src: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
       textarea: "",
-      contentList: [{
-        value: "旋仔牛B",
-        type: "me"
-      }, {
-        value: "旋仔牛B",
-        type: "opposite"
-      }, {
-        value: "旋仔牛B",
-        type: "me"
-      }, {
-        value: "旋仔牛B",
-        type: "opposite"
-      }, {
-        value: "旋仔牛B",
-        type: "me"
-      }, {
-        value: "旋仔牛B",
-        type: "opposite"
-      }, {
-        value: "旋仔牛B",
-        type: "me"
-      }, {
-        value: "旋仔牛B",
-        type: "opposite"
-      }, {
-        value: "旋仔牛B",
-        type: "me"
-      }, {
-        value: "旋仔牛B",
-        type: "opposite"
-      }],
-      customerList: [{
-        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
-        name: "旋仔的好友",
-        isOnline: true
-      }, {
-        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
-        name: "旋仔的好友",
-        isOnline: true
-      }, {
-        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
-        name: "旋仔的好友",
-        isOnline: false
-      }, {
-        avatar: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
-        name: "旋仔的好友",
-        isOnline: false
-      }]
+      contentList: [],
+      onlineUserList: [],
+      outlineUserList: [],
+      recordList: []
     }
   }
 }

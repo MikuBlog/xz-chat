@@ -7,6 +7,10 @@ import ElementUI from 'element-ui'
 import { 
   Drawer 
 } from 'view-design'
+// 引入jquery模块
+import $ from 'jquery'
+// 引入全局提示模块
+import Message from '@/api/message/message'
 // 引入时间格式化函数
 import Date from '@/api/other/format_date'
 // 引入获取URL参数函数
@@ -169,6 +173,16 @@ Vue.prototype.$sortList = SortList
  * @description 全局通用配置
  */
 Vue.prototype.defaultConfig = DefaultConfig
+/**
+ * @author xuanzai
+ * @description 引入全局提示
+ * @param {String} msg 提示内容
+ */
+Vue.prototype.$successMsg = Message.successMsg
+Vue.prototype.$warnMsg = Message.warnMsg
+Vue.prototype.$errorMsg = Message.errorMsg
+
+Vue.prototype.$ = $
 
 Vue.config.productionTip = false
 

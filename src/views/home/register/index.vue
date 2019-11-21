@@ -9,35 +9,89 @@
     <div class="flex-box">
       <div class="left-size">
         <div class="content-box">
-          <div class="welcome-header">欢迎使用</div>
-          <div class="content">旋仔的多人聊天室</div>
+          <div class="welcome-header">欢迎来到</div>
+          <div class="content">广东海洋大学</div>
+          <div class="content">科研数据服务平台</div>
         </div>
       </div>
       <div class="right-size">
         <div class="login-box" ref="loginBox">
-          <div class="header" ref="header">{{ defaultConfig.loginHeader }}</div>
+          <div class="header" ref="header">注册用户</div>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
             <el-form-item prop="username" class="form-item">
-              <el-input v-model="ruleForm.username" prefix-icon="el-icon-user-solid"></el-input> 
+              <el-input
+                v-model="ruleForm.username"
+                prefix-icon="el-icon-user-solid"
+                placeholder="请输入用户名"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="name" class="form-item">
+              <el-input v-model="ruleForm.name" prefix-icon="el-icon-user" placeholder="请输入姓名"></el-input>
             </el-form-item>
             <el-form-item prop="password" class="form-item">
               <el-input
+                type="password"
                 v-model="ruleForm.password"
                 prefix-icon="el-icon-lock"
+                placeholder="请输入密码"
+              ></el-input><span v-if="ruleForm.password" style="position: absolute; right: -23px; color: red;">{{ power === 0 
+                ? '弱' 
+                : power === 1
+                ? '弱'
+                : power === 2
+                ? '中'
+                : power === 3
+                ? '强'
+                : '强' }}</span>
+            </el-form-item>
+            <el-form-item prop="checkPass" class="form-item">
+              <el-input
                 type="password"
-                @keyup.native="pressEnter"
+                v-model="ruleForm.checkPass"
+                prefix-icon="el-icon-lock"
+                placeholder="请确认密码"
               ></el-input>
             </el-form-item>
+            <el-form-item class="form-item" style="top: 3px;">
+              <treeselect
+                v-model="ruleForm.dept.id"
+                :options="depts"
+                placeholder="选择学院"
+                @select="selectDept"
+                @input="jobSelect"
+              />
+            </el-form-item>
+            <el-form-item class="form-item">
+              <el-select v-model="ruleForm.job.id" placeholder="请先选择学院再选专业">
+                <el-option
+                  v-for="(item, index) in jobs"
+                  :key="item.name + index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item prop="phone" class="form-item">
+              <el-input v-model="ruleForm.phone" prefix-icon="el-icon-phone" placeholder="请输入电话号码"></el-input>
+            </el-form-item>
+            <el-form-item prop="email" class="form-item">
+              <el-input v-model="ruleForm.email" prefix-icon="el-icon-eleme" placeholder="请输入电子邮箱"></el-input>
+            </el-form-item>
             <el-form-item>
-              <el-button class="login-button" type="primary" @click="submitForm('ruleForm')" style="width: 100%;">登录</el-button>
+              <el-button
+                class="login-button"
+                type="primary"
+                @click="submitForm('ruleForm')"
+                style="width: 100%;"
+              >注册</el-button>
             </el-form-item>
             <el-form-item align="right">
               <el-button
                 type="text"
-                @click="$router.push('/register')"
+                @click="$router.push('/login')"
                 size="small"
-                style="position: relative; right: 25px; bottom: 10px;"
-              >去注册</el-button>
+                style="position: relative; right: 13px; bottom: 10px;"
+              >去登录</el-button>
             </el-form-item>
             <el-form-item v-show="defaultConfig.isAutoLogin">
               <el-checkbox v-model="ruleForm.checked" @change="autoLogin">自动登录</el-checkbox>
@@ -142,7 +196,42 @@
 <script>
 export default {
   data() {
+    // 验证电话号码
+    const validPhone = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入电话号码"));
+      } else if (!this.isvalidPhone(value)) {
+        callback(new Error("请输入正确的11位手机号码"));
+      } else {
+        callback();
+      }
+    };
+    var validatePass = (rule, value, callback) => {
+      var reg = /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\\W_!@#$%^&*`~()-+=]+$)(?![0-9\\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\\W_!@#$%^&*`~()-+=]{6,21}$/;
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (!reg.test(value)) {
+        callback(
+          new Error(
+            "密码必须由数字、大写字母、小写字母、特殊符至少三种组成且长度在6~21位之间!"
+          )
+        );
+      } else {
+        callback();
+      }
+      this.power = this.checkPwd(value)
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
+      power: 0,
       labelPosition: "left",
       isShowDrawer: false,
       activeName: "0",
@@ -151,8 +240,8 @@ export default {
       opacity: 100,
       mask: 0,
       blur: 0,
-      height: 62,
-      width: 50,
+      height: 10,
+      width: 10,
       fontSize: 30,
       iconSize: 30,
       size: "cover",
@@ -161,26 +250,41 @@ export default {
       fontColor: "#a0a4af",
       isItalic: true,
       unLock: false,
+      depts: [],
+      jobs: [],
       ruleForm: {
         username: "",
+        name: "",
         password: "",
-        checked: false
+        dept: {
+          id: null
+        },
+        job: {
+          id: ""
+        },
+        phone: "",
+        email: ""
       },
       rules: {
         username: [
           { required: true, message: "账号不能为空", trigger: "blur" },
           { min: 2, max: 21, message: "账号长度在2到20个字符", trigger: "blur" }
         ],
-        password: [
-          { required: true, message: "密码不能为空", trigger: "blur" },
-          { min: 3, max: 21, message: "账号长度在3到21个字符", trigger: "blur" }
+        name: [{ required: true, message: "姓名不能不为空", trigger: "blur" }],
+        password: [{ validator: validatePass, trigger: "change" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+        phone: [{ required: true, trigger: "blur", validator: validPhone }],
+        email: [
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          { type: "email", message: "请输入正确的邮箱地址", trigger: "blur" }
         ]
       }
     };
   },
   created() {
-    document.title = "登录";
+    document.title = "注册";
     this.isAutoLogin();
+    this.getCollegeList();
   },
   mounted() {
     this.useBg();
@@ -190,6 +294,61 @@ export default {
     });
   },
   methods: {
+    // 验证密码强度
+    checkPwd(msg) {
+      //判断含有数字字母特殊符号
+      var lvl = 0;
+      if (msg.match(/[0-9]/)) {
+        lvl++;
+      }
+      if (msg.match(/[a-zA-Z]/)) {
+        lvl++;
+      }
+      if (msg.match(/[^0-9a-zA-Z]/)) {
+        lvl++;
+      }
+      if (msg.length < 6) {
+        lvl--;
+      }
+      return lvl;
+    },
+    // 判断电话是否有效
+    isvalidPhone(str) {
+      const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+      return reg.test(str);
+    },
+    // 获取学院信息
+    getCollegeList() {
+      this.$http_json({
+        url: "/api/dept/get",
+        method: "get"
+      }).then(result => {
+        this.depts = result.data.content;
+      });
+    },
+    initialProfessionList(list, id) {
+      this.jobs.splice(0);
+      list.forEach(value => {
+        this.jobs.push(value);
+      });
+      this.ruleForm.job.id = id;
+    },
+    // 获取专业信息
+    getProfessionalList(id, jobId) {
+      this.$http_json({
+        url: `/api/job/page?page=0&size=9999&deptId=${id}`,
+        method: "get"
+      }).then(result => {
+        this.initialProfessionList(result.data.content, jobId);
+      });
+    },
+    selectDept(node, instanceId) {
+      this.getProfessionalList(node.id);
+    },
+    // 清空岗位
+    jobSelect() {
+      this.ruleForm.job.id = null;
+    },
     // 插入元素
     insertEle() {
       const image =
@@ -224,7 +383,7 @@ export default {
         "height",
         `${(this.height =
           this.$getMemoryPmt("height") ||
-          (this.defaultConfig.otherLoginMethods ? 62 : 38)) / 2}rem`
+          (this.defaultConfig.otherLoginMethods ? 80 : 38)) / 2}rem`
       );
       this.$setStyle(
         loginBox,
@@ -321,10 +480,6 @@ export default {
       this.opacity = +this.$getMemoryPmt("opacity") || this.opacity;
       this.blur = +this.$getMemoryPmt("blur") || this.blur;
       this.mask = +this.$getMemoryPmt("mask") || this.mask;
-      this.height =
-        +this.$getMemoryPmt("height") ||
-        (this.defaultConfig.otherLoginMethods ? 62 : this.height);
-      this.width = +this.$getMemoryPmt("width") || this.width;
       this.fontSize = +this.$getMemoryPmt("fontSize") || this.fontSize;
       this.isItalic =
         this.$getMemoryPmt("isItalic") !== ""
@@ -417,22 +572,31 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$.ajax({
-            url: `${requestUrl}/api/user/login`,
+          if (!this.ruleForm.dept.id || !this.ruleForm.job.id) {
+            this.$warnMsg("请选择学院与专业");
+            return;
+          }
+          const form = this.ruleForm
+          this.$http_json({
+            url: "/api/user/register",
             method: "post",
             data: {
-              username: this.ruleForm.username,
-              password: this.ruleForm.password
+              username: form.username,
+              name: form.name,
+              password: form.password,
+              dept: {
+                id: form.dept.id
+              },
+              job: {
+                id: form.job.id
+              },
+              phone: form.phone,
+              email: form.email
             }
           }).then(result => {
-            if(result.status === 'ok') {
-                this.$successMsg("登录成功")
-                this.$router.push('/home')
-                this.$setMemorySes("user", result.data)
-              }else {
-                this.$errorMsg(`${result.msg}`)
-              }
-          })
+            this.$successMsg("注册成功，请登录");
+            this.$router.push({ path: "/login" });
+          });
         } else {
           return false;
         }
@@ -454,7 +618,7 @@ export default {
   flex: 1;
 }
 .left-size {
-  background: rgba(0, 0, 0, .15);
+  background: rgba(0, 0, 0, 0.15);
   color: #fefefe;
 }
 .content-box {
@@ -476,8 +640,8 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  width: 25rem;
-  height: 20rem;
+  height: 32rem;
+  width: 35rem;
   margin: auto;
   background: #ffffff;
   transition: 0.5s;
@@ -510,7 +674,7 @@ export default {
   top: 0;
   right: 0;
   left: 0;
-  bottom: 0; 
+  bottom: 0;
   background-image: url(../../assets/login/u15.png);
   background-position: center;
   background-size: cover;
@@ -611,14 +775,23 @@ svg:hover {
 }
 .form-item {
   position: relative;
-  transform: translateX(-50%);
-  left: 50%;
-  width: 80%;
+  margin: 1rem;
+  display: inline-block;
+  width: 230px;
+  vertical-align: top;
 }
+// .tree-select {
+//   /deep/ {
+//     .vue-treeselect__control {
+//       width: 230px;
+//     }
+//   }
+// }
 .login-button {
   position: relative;
   transform: translateX(-50%);
+  margin-top: 1.5rem;
   left: 50%;
-  width: 80%!important;
+  width: 94% !important;
 }
 </style>

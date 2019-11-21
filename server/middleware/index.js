@@ -7,23 +7,16 @@ const url = require('url')
  * @returns { Object }
  */
 function urlQuery(req, res, next) {
-  let 
-    param = "",
-    myUrl = url.parse(req.url).query
+  let myUrl = url.parse(req.url).query
   req.urlQuery = {}
-  if (myUrl.split("?")[1]) {
-    param = myUrl.split("?")[1]
-  } else if (window.location.search) {
-    param = window.location.search.replace("?", "")
-  } else {
-    next()
-  }
-  param.split("&").forEach(val => {
-    const
-      key = val.split("=")[0],
-      value = val.split("=")[1]
-    req.urlQuery[key] = value
-  })
+  if (myUrl) {
+    myUrl.split("&").forEach(val => {
+      const
+        key = val.split("=")[0],
+        value = val.split("=")[1]
+      req.urlQuery[key] = decodeURIComponent(value)
+    })
+  } 
   next()
 }
 
