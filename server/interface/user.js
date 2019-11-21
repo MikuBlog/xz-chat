@@ -62,44 +62,35 @@ function login(req, res) {
   }
   new Promise((resolve, reject) => {
     accountSchema
-    .find(
-      { username: data.username, password: data.password, isonline: false },
-      (err, result) => {
-        if (err) {
-          res.send({
-            status: 'error',
-            msg: "服务器出错"
-          })
-        } else if (result.length > 0) {
-          resolve(result[0])
-        } else {
-          res.send({
-            status: "error",
-            msg: "账号、密码错误或已经登录"
-          })
-        }
-      }
-    )
-  }).then((result) => {
-    return new Promise((resolve, reject) => {
-      accountSchema
-        .updateOne(
-          { username: data.username },
-          { $set: { isonline: true } },
-          err => {
-            if(err) {
-              reject("服务器出错")
-            }else {
-              res.send({
-                status: "ok",
-                msg: "登录成功",
-                data: result
-              })
-              resolve()
-            }
+      .find(
+        { username: data.username, password: data.password, isonline: false },
+        (err, result) => {
+          if (err) {
+            reject("服务器出错")
+          } else if (result.length > 0) {
+            resolve(result[0])
+          } else {
+            reject("账号、密码错误或已经登录")
           }
-        )
-    })
+        }
+      )
+  }).then((result) => {
+    accountSchema
+      .updateOne(
+        { username: data.username },
+        { $set: { isonline: true } },
+        err => {
+          if (err) {
+            reject("服务器出错")
+          } else {
+            res.send({
+              status: "ok",
+              msg: "登录成功",
+              data: result
+            })
+          }
+        }
+      )
   }).catch(e => {
     res.send({
       status: "error",
@@ -111,7 +102,7 @@ function login(req, res) {
 // 用户登出
 function logout(req, res) {
   const data = req.urlQuery
-  if (!data.id) {
+  if (!data.username) {
     res.send({
       status: "error",
       msg: "参数不正确或缺少参数"
@@ -120,7 +111,7 @@ function logout(req, res) {
   }
   accountSchema
     .updateOne(
-      { _id: data.id },
+      { username: data.username },
       { $set: { isonline: false } },
       err => {
         if (err) {

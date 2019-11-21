@@ -6,18 +6,17 @@ export default {
     // 登出
     logout() {
       this.$.ajax({
-        url: `${requestUrl}/api/user/logout?id=${this.$getMemorySes("user")._id}`,
+        url: `${requestUrl}/api/user/logout?username=${this.user.username}`,
         type: "get"
-      }).then(result => {
-        if (result.status == 'ok') {
-          this.$successMsg(`${result.msg}`)
-          this.socketInRoom.send("outline")
-          this.socketInFace.close()
-          this.socketInRoom.close()
-        } else {
-          this.$errorMsg(`${data.msg}`)
-        }
       })
+      this.socketInRoom.send(JSON.stringify({
+        username: this.user.username,
+        type: 'outline'
+      }))
+      try {
+        this.socketInRoom.close()
+        this.socketInFace.close()
+      }catch(e) {}
     },
     // 存储聊天记录
     sendRecord() {

@@ -7,7 +7,7 @@
           <div class="profile">
             <div class="name">
               我
-              <span style="color: #fefefe; font-size: .9rem">（在线）</span>
+              <span style="color: #fefefe; font-size: .9rem">（{{ isonline ? '在线' : '离线' }}）</span>
             </div>
             <span
               class="name"
@@ -18,13 +18,22 @@
         <el-divider></el-divider>
         <div class="customer-list">
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
-            <div class="list" v-for="items in userList" @click="connectWebsocketInFace(items)">
+            <div class="list" v-for="items in onlineUserList" @click="connectWebsocketInFace(items)">
               <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
-              <span class="name" :style="{ color: items.isonline ? '#fefefe' : '#666' }">
+              <span class="name" style="color: #fefefe">
                 {{ items.username }}
                 <span
                   style="color: #666; font-size: .9rem"
-                >（{{ items.isonline ? "在线" : '离线' }}）</span>
+                >（在线）</span>
+              </span>
+            </div>
+            <div class="list" v-for="items in outlineUserList" @click="connectWebsocketInFace(items)">
+              <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
+              <span class="name" style="color: #666">
+                {{ items.username }}
+                <span
+                  style="color: #666; font-size: .9rem"
+                >（离线）</span>
               </span>
             </div>
           </el-scrollbar>
