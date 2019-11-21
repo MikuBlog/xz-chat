@@ -1,10 +1,6 @@
 // 连接数据库
 require('./database/connect')
 
-// 引入websocket
-require('./socket/socketInFace')
-require('./socket/socketInRoom')
-
 // 后台框架
 const express = require('express')
 /*中间件*/
@@ -12,7 +8,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 // 处理url数据
 const urlQuery = require('./middleware/index')
+// 引入websocket处理模块
+const express_ws = require('express-ws')
 const app = express()
+
+express_ws(app)
 
 /*导入接口*/
 
@@ -20,6 +20,10 @@ const app = express()
 const account = require('./interface/user')
 // 聊天接口
 const chatRecord = require('./interface/chat_record')
+
+/*导入websocket模块*/
+const inFace = require('./socket/socketInFace')
+const inRoom = require('./socket/socketInRoom')
 
 // 允许跨域
 app.all('*', function(req, res, next) {
@@ -51,5 +55,12 @@ app.get('/api/chat/getrecord', urlQuery.urlQuery, chatRecord.getRecord)
 app.post('/api/chat/withdrawrecord', urlQuery.urlQuery, chatRecord.withdrawRecord)
 // 记录聊天记录
 app.post('/api/chat/insertrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertRecord)
+// 批量记录聊天记录
+app.post('/api/chat/insertallrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertAllRecord)
+
+// 一对一传输
+app.ws('/inface/:uid', inFace.server)
+// 一对多传输
+app.ws('/inroom', inRoom.server)
 
 app.listen(8888)

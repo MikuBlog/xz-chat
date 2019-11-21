@@ -4,10 +4,10 @@ export default {
     this.initialProfile()
     // 进入房间建立连接
     this.connectWebsocketInRoom()
-    // // 初始化在线用户列表
-    // this.getOnlineUserList()
-    // // 初始化离线用户列表
-    // this.getOutlineUserList()
+  },
+  mounted() {
+    // 初始化滚动监听
+    this.initialListener()
   },
   methods: {
     // 进入房间建立websocket
@@ -19,12 +19,7 @@ export default {
           this.socketInRoom.send("online")
         }
         this.socketInRoom.onmessage = e => {
-          this.getOnlineUserList()
-          this.getOutlineUserList()
-          // this.contentList.push(JSON.parse(e.data))
-          // this.$nextTick(() => {
-          //   this.initialChatHeight()
-          // })
+          this.getUserList()
         }
         this.socketInRoom.onerror = e => {
           console.log("出错了")
@@ -36,28 +31,38 @@ export default {
         this.$warnMsg("浏览器版本过低，请切换到高版本浏览器")
       }
     },
+    // 初始化监听器
+    initialListener() {
+      const viewScroll = document.querySelectorAll('.el-scrollbar__wrap')[1]
+      viewScroll.addEventListener('scroll', e => {
+        if(viewScroll.scrollTop == 0) {
+          this.page ++
+          this.continueToGetRecordList()
+        }
+      })
+      window.onunload = () => {
+        alert(123123)
+      }
+      console.log(window.onunload)
+      window.onbeforeunload = () => {
+        confirm(123123)
+        // this.logout()
+      }
+    },
+    // 初始化用户信息
     initialProfile() {
       for(let key in this.$getMemorySes('user')) {
         this.user[key] = this.$getMemorySes('user')[key]
       }
     },
     // 获取离线用户列表
-    getOutlineUserList() {
+    getUserList() {
       this.$.ajax({
-        url: `${requestUrl}/api/user/getuserlist?isonline=false&username=${this.user.username}`,
+        url: `${requestUrl}/api/user/getuserlist?username=${this.user.username}`,
         type: "get",
       }).then(result => {
-        this.outlineUserList = result.list
+        this.userList = result.list
       })
     },
-    // 获取在线用户列表
-    getOnlineUserList() {
-      this.$.ajax({
-        url: `${requestUrl}/api/user/getuserlist?isonline=true&username=${this.user.username}`,
-        type: "get",
-      }).then(result => {
-        this.onlineUserList = result.list
-      })
-    }
   },
 }

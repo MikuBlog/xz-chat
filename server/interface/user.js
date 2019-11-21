@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const accountSchema = require('../database/schema/user')
 
 // 注册
@@ -64,20 +63,19 @@ function login(req, res) {
   new Promise((resolve, reject) => {
     accountSchema
     .find(
-      { username: data.username, password: data.password },
+      { username: data.username, password: data.password, isonline: false },
       (err, result) => {
         if (err) {
           res.send({
             status: 'error',
             msg: "服务器出错"
           })
-          return
         } else if (result.length > 0) {
           resolve(result[0])
         } else {
           res.send({
             status: "error",
-            msg: "账号或密码错误"
+            msg: "账号、密码错误或已经登录"
           })
         }
       }
@@ -144,7 +142,6 @@ function getUserList(req, res) {
   const data = req.urlQuery
   accountSchema
     .$where(`this.username != "${data.username}"`)
-    .find({ isonline: data.isonline })
     .exec((err, result) => {
       if (err) {
         res.send({

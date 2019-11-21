@@ -1,31 +1,42 @@
-const ws = require('nodejs-websocket')
 const moment = require('moment')
+// 存放websocket连接
+let contectors = []
 
-const server = ws.createServer(con => {
-  con.on('text', obj => {
-    obj = JSON.parse(obj)
-    boardcast({
-      createtime: getDate(),
-      content: obj.content,
-      sender: obj.sender,
-      recipient: obj.recipient
+function server(ws, req) {
+  const uid = req.params.uid;
+  ws.uid = uid
+  contectors.push(ws)
+  ws.onmessage = msg => {
+    msg = JSON.parse(msg.data)
+    contectors.forEach(socket => {
+      if(uid === socket.uid) {
+        socket.send(JSON.stringify({
+          createtime: getDate(),
+          content: msg.content,
+          sender: msg.sender,
+          recipient: msg.recipient
+        }))
+      }
     })
-  })
-  con.on('close', (code, reason) => {
-    console.log("关闭连接")
-  })
-  con.on('error', (code, reason) => {
-    console.log("异常关闭")
-  })
-}).listen(8889)
-
-function boardcast(obj) {
-  server.connections.forEach(con => {
-    con.sendText(JSON.stringify(obj))
-  })
+  }
+  ws.on('close', () => {
+    contectors = contectors.filter(conn => {
+      return (conn === ws) ? false : true;
+    });
+  });
 }
+
+// function boardcast(obj) {
+//   server.connections.forEach(con => {
+//     con.sendText(JSON.stringify(obj))
+//   })
+// }
 
 function getDate() {
   return moment().format('YYYY-MM-DD HH:mm:ss')
+}
+
+module.exports = {
+  server: server
 }
 

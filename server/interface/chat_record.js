@@ -26,6 +26,35 @@ function insertRecord(req, res) {
   })
 }
 
+function insertAllRecord(req, res) {
+  const data = req.body
+  const list = JSON.parse(data.contentList), dataArr = []
+  if(!list.length) {
+    res.send({
+      status: "ok",
+      msg: "没有任何聊天记录"
+    })
+    return
+  }
+  list.forEach(val => {
+    val.isshow = true
+    dataArr.push(new chatRecordSchema(val))
+  })
+  chatRecordSchema.insertMany(dataArr, err => {
+    if (err) {
+      res.send({
+        status: "error",
+        msg: "服务器出错"
+      })
+    } else {
+      res.send({
+        status: "ok",
+        msg: "数据记录成功"
+      })
+    }
+  })
+}
+
 // 撤回聊天记录
 function withdrawRecord(req, res) {
   const data = req.urlQuery
@@ -75,6 +104,7 @@ function getRecord(req, res) {
         mapkey: data.mapkey
       }
     )
+    .sort({ createtime: 'desc' })
     .skip((data.page - 1) * size)
     .limit(+size)
     .exec((err, result) => {
@@ -91,60 +121,11 @@ function getRecord(req, res) {
         })
       }
     })
-  // new Promise((resolve, reject) => {
-  //   chatRecordSchema
-  //     .find(
-  //       {
-  //         isshow: true,
-  //         mapkey: data.mapkey
-  //       }
-  //     )
-  //     .skip((data.page - 1) * size)
-  //     .limit(+size)
-  //     .exec((err, result) => {
-  //       if (err) {
-  //         reject(err)
-  //       } else {
-  //         console.log(result)
-  //         resolve(result)
-  //       }
-  //     })
-  // }).then((list_1) => {
-  //   return new Promise((resolve, reject) => {
-  //     chatRecordSchema
-  //       .find(
-  //         {
-  //           isshow: true,
-  //           recipient: data.sender,
-  //           sender: data.recipient
-  //         }
-  //       )
-  //       .sort({ '_id': -1 })
-  //       .skip((data.page - 1) * size)
-  //       .limit(+size)
-  //       .exec((err, result) => {
-  //         if (err) {
-  //           reject(err)
-  //         } else {
-            // res.send({
-            //   status: "ok",
-            //   msg: "获取聊天记录成功",
-            //   list: list_1.concat(result)
-            // })
-  //         }
-  //       })
-  //   })
-  // }).catch((e) => {
-  //   console.log(e)
-    // res.send({
-    //   status: "error",
-    //   msg: "服务器出错"
-    // })
-  // })
 }
 
 module.exports = {
   insertRecord: insertRecord,
+  insertAllRecord: insertAllRecord,
   withdrawRecord: withdrawRecord,
   getRecord: getRecord
 }
