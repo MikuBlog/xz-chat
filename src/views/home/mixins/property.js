@@ -13,6 +13,7 @@ export default {
       loading: false,
       getRecordLoading: false,
       isonline: false,
+      isGroup: false,
       src: "https://myinterface.xuanzai.top/getPicture?type=头像&id=1",
       textarea: "",
       ExistingContentList: [],

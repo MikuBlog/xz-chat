@@ -16,10 +16,10 @@ export default {
       try {
         this.socketInRoom.close()
         this.socketInFace.close()
-      }catch(e) {}
+      } catch (e) { }
     },
     // 存储聊天记录
-    sendRecord() {
+    sendRecord(type) {
       this.$.ajax({
         url: `${requestUrl}/api/chat/insertrecord`,
         type: 'post',
@@ -28,11 +28,12 @@ export default {
           recipient: this.chatObj.username,
           sender: this.user.username,
           createtime: new Date(),
-          mapkey: `${Number(this.user.key) + Number(this.chatObj.key)}`
+          mapkey: `${Number(this.user.key) + Number(this.chatObj.key)}`,
+          type: type
         }
       }).then(result => {
         this.loading = false
-        if(result.status === 'error') {
+        if (result.status === 'error') {
           this.$errorMsg("服务器出错")
         }
       })
@@ -85,17 +86,68 @@ export default {
         this.getRecordLoading = false
       })
     },
+    // 获取群聊聊天记录
+    getGroupRecordList() {
+      this.page = 1
+      this.getRecordLoading = true
+      this.$.ajax({
+        url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&type=group`,
+        type: "get"
+      }).then(result => {
+        this.initialRecordList(result.list)
+        this.$nextTick(() => {
+          this.initialChatHeight()
+        })
+        this.getRecordLoading = false
+      })
+    },
     // 向服务器发送推送
     sendContent() {
       if (this.textarea && this.chatObj.username) {
-        this.socketInFace.send(JSON.stringify({
-          content: this.textarea,
-          sender: this.user.username,
-          recipient: this.chatObj.username
-        }))
-        this.sendRecord()
-        this.loading = true
-        this.textarea = ""
+        if (this.isGroup) {
+          this.socketInFace.send(JSON.stringify({
+            content: this.textarea,
+            sender: this.user.username,
+            recipient: 'group'
+          }))
+        } else {
+          this.socketInFace.send(JSON.stringify({
+            content: this.textarea,
+            sender: this.user.username,
+            recipient: this.chatObj.username
+          }))
+        }
+      }
+      this.sendRecord(this.isGroup ? 'group' : 'face')
+      this.loading = true
+      this.textarea = ""
+    },
+    // 群聊连接
+    connectWebsocketInGroup(uid) {
+      this.isGroup = true
+      this.chatObj = {
+        username: '群聊'
+      }
+      this.socketInFace && this.socketInFace.close()
+      if (window.WebSocket) {
+        this.socketInFace = new WebSocket(`${websocketInGroupUrl}${uid}`)
+        this.socketInFace.onopen = e => {
+          this.getGroupRecordList()
+        }
+        this.socketInFace.onmessage = e => {
+          this.willSendContentList.push(JSON.parse(e.data))
+          this.$nextTick(() => {
+            this.initialChatHeight()
+          })
+        }
+        this.socketInFace.onerror = e => {
+          console.log("出错了")
+        }
+        this.socketInFace.onclose = e => {
+          console.log("关闭连接")
+        }
+      } else {
+        this.$warnMsg("浏览器版本过低，请切换到高版本浏览器")
       }
     },
     // 面对面连接

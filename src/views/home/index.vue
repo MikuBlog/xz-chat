@@ -5,19 +5,25 @@
         <div class="header">
           <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
           <div class="profile">
-            <div class="name">
+            <div class="name" style="font-size: 1.1rem">
               我
-              <span style="color: #fefefe; font-size: .9rem">（{{ isonline ? '在线' : '离线' }}）</span>
+              <span style="color: #fefefe;">（{{ isonline ? '在线' : '离线' }}）</span>
             </div>
             <span
               class="name"
-              style="font-size: 1rem; color: #aaa; top: .3rem"
+              style="font-size: .8rem; color: #aaa; top: .2rem"
             >聊天名称：{{ user.username }}</span>
           </div>
         </div>
         <el-divider></el-divider>
         <div class="customer-list">
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
+            <div class="list" @click="connectWebsocketInGroup(1)">
+              <el-avatar :size="50" src="https://myinterface.xuanzai.top/getPicture?type=%E5%A4%B4%E5%83%8F&id=12" fit="cover" class="avatar"></el-avatar>
+              <span class="name" style="color: #fefefe">
+                群聊
+              </span>
+            </div>
             <div class="list" v-for="items in onlineUserList" @click="connectWebsocketInFace(items)">
               <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
               <span class="name" style="color: #fefefe">
@@ -55,7 +61,7 @@
             >
               <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
               <el-card shadow="always" class="card">
-                <div class="date-time">{{ $formatDate(items.createtime, true) }}</div>
+                <div class="date-time"><span style="margin-right: 1rem">{{ items.sender }}</span>{{ $formatDate(items.createtime, true) }}</div>
                 <div>{{items.content}}</div>
               </el-card>
             </div>

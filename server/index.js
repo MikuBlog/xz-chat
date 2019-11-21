@@ -23,6 +23,7 @@ const chatRecord = require('./interface/chat_record')
 
 /*导入websocket模块*/
 const inFace = require('./socket/socketInFace')
+const inGroup = require('./socket/socketInGroup')
 const inRoom = require('./socket/socketInRoom')
 
 // 允许跨域
@@ -62,5 +63,6 @@ app.post('/api/chat/insertallrecord', bodyParser.urlencoded({ extended: false })
 app.ws('/inface/:uid', inFace.server)
 // 一对多传输
 app.ws('/inroom', inRoom.server)
+app.ws('/inGroup/:uid', inGroup.server)
 
 app.listen(8888)

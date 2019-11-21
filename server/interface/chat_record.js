@@ -90,14 +90,15 @@ function getRecord(req, res) {
   const
     data = req.urlQuery,
     size = req.urlQuery.size || 10
-  if (!data.page || !data.mapkey) {
+  if (!data.page) {
     res.send({
       status: "error",
       msg: "参数不正确或缺少参数"
     })
     return
   }
-  chatRecordSchema
+  if(data.mapkey) {
+    chatRecordSchema
     .find(
       {
         isshow: true,
@@ -121,6 +122,32 @@ function getRecord(req, res) {
         })
       }
     })
+  }else {
+    chatRecordSchema
+    .find(
+      {
+        isshow: true,
+        type: 'group'
+      }
+    )
+    .sort({ createtime: 'desc' })
+    .skip((data.page - 1) * size)
+    .limit(+size)
+    .exec((err, result) => {
+      if (err) {
+        res.send({
+          status: "error",
+          msg: "服务器出错"
+        })
+      } else {
+        res.send({
+          status: "ok",
+          msg: "获取聊天记录成功",
+          list: result
+        })
+      }
+    })
+  }
 }
 
 module.exports = {

@@ -26,12 +26,6 @@ function server(ws, req) {
   });
 }
 
-// function boardcast(obj) {
-//   server.connections.forEach(con => {
-//     con.sendText(JSON.stringify(obj))
-//   })
-// }
-
 function getDate() {
   return moment().format('YYYY-MM-DD HH:mm:ss')
 }

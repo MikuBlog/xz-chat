@@ -5,6 +5,7 @@ const Schema = new mongoose.Schema({
   recipient: String,
   createtime: Date,
   isshow: Boolean,
-  mapkey: String 
+  mapkey: String,
+  type: String
 })
 module.exports = mongoose.model('chat_record', Schema)
