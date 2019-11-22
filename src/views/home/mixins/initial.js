@@ -3,8 +3,6 @@ export default {
     document.title = "聊天室"
     // 初始化用户信息
     this.initialProfile()
-    // 进入房间建立连接
-    this.connectWebsocketInRoom()
   },
   mounted() {
     // 初始化滚动监听
@@ -62,6 +60,8 @@ export default {
         for (let key in this.$getMemorySes('user')) {
           this.user[key] = this.$getMemorySes('user')[key]
         }
+        // 进入房间建立连接
+        this.connectWebsocketInRoom()
       }
     },
   },

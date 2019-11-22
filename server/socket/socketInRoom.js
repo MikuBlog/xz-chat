@@ -24,6 +24,9 @@ function server(ws, req) {
         list.push(val)
       })
       contectors.forEach(socket => {
+        if(socket.readyState == 2) {
+          return
+        }
         socket.send(JSON.stringify({
           onlineUserList: onlineUserList,
           outlineUserList: list

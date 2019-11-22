@@ -14,8 +14,10 @@ export default {
         type: 'outline'
       }))
       try {
+        this.$setMemorySes('user', "")
         this.socketInRoom.close()
-        this.socketInFace.close()
+        this.socketInGroup && this.socketInGroup.close()
+        this.socketInFace && this.socketInFace.close()
       } catch (e) { }
     },
     // 存储聊天记录
@@ -137,21 +139,21 @@ export default {
       }
       this.socketInFace && this.socketInFace.close()
       if (window.WebSocket) {
-        this.socketInFace = new WebSocket(`${websocketInGroupUrl}${uid}`)
-        this.socketInFace.onopen = e => {
+        this.socketInGroup = new WebSocket(`${websocketInGroupUrl}${uid}`)
+        this.socketInGroup.onopen = e => {
           this.getGroupRecordList()
         }
-        this.socketInFace.onmessage = e => {
+        this.socketInGroup.onmessage = e => {
           this.willSendContentList.push(JSON.parse(e.data))
           console.log(JSON.parse(e.data))
           this.$nextTick(() => {
             this.initialChatHeight()
           })
         }
-        this.socketInFace.onerror = e => {
+        this.socketInGroup.onerror = e => {
           console.log("出错了")
         }
-        this.socketInFace.onclose = e => {
+        this.socketInGroup.onclose = e => {
           console.log("关闭连接")
         }
       } else {
