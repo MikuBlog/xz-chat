@@ -555,6 +555,7 @@ export default {
           const 
             form = this.ruleForm,
             _this = this
+          this.ruleForm.name = this.username
           this.$.ajax({
             url: `${requestUrl}/api/user/register`,
             method: "post",

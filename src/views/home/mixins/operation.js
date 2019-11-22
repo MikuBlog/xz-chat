@@ -3,6 +3,10 @@ export default {
     this.logout()
   },
   methods: {
+    // 展开抽屉
+    showSetting() {
+      this.$refs.drawer.drawer = true;
+    },
     // 登出
     logout() {
       this.$.ajax({

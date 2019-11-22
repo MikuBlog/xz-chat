@@ -21,7 +21,27 @@
   background-size: cover;
   background-position: center;
 }
-
+.setting {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  border-radius: 50%;
+  background: #f7f7f7;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.setting:hover {
+  transform: rotate(360deg) scale(1.1);
+  color: #fefefe;
+  background: rgb(19, 180, 255);
+}
+.el-icon-setting {
+  font-size: 1.5rem;
+  line-height: 3rem;
+}
 .chat-box {
   position: relative;
   width: 70%;
@@ -125,7 +145,8 @@
         position: relative;
         border-radius: 50%;
         overflow: hidden;
-        width:50px;
+        min-width:50px;
+        max-width: 50px;
         height: 50px;
         top: 0.5rem;
         img {

@@ -1,9 +1,12 @@
 <template>
   <div class="home">
+    <div class="setting" @click="showSetting">
+      <i class="el-icon-setting"></i>
+    </div>
     <div class="chat-box">
       <div class="left-list">
         <div class="header">
-          <div class="avatar">
+          <div class="avatar" >
             <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
           </div>
           <div class="profile">
@@ -31,9 +34,27 @@
               v-for="items in onlineUserList"
               @click="connectWebsocketInFace(items)"
             >
-              <div class="avatar">
-                <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
-              </div>
+              <el-popover
+                placement="left"
+                :title="items.username"
+                width="200"
+                trigger="hover"
+                >
+                <div class="customer-profix">
+                  <div class="detail">
+                    年龄：{{ items.age }}
+                  </div>
+                  <div class="detail">
+                    电话：{{ items.phone }}
+                  </div>
+                  <div class="detail">
+                    邮箱：{{ items.email }}
+                  </div>
+                </div>
+                <div class="avatar" slot="reference">
+                  <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+                </div>
+              </el-popover>
               <!-- <el-avatar :size="50" src="../../assets/avatar/user.jpg" fit="cover" class="avatar"></el-avatar> -->
               <span class="name" style="color: #fefefe">
                 {{ items.username }}
@@ -45,9 +66,27 @@
               v-for="items in outlineUserList"
               @click="connectWebsocketInFace(items)"
             >
-              <div class="avatar">
-                <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
-              </div>
+              <el-popover
+                placement="left"
+                :title="items.username"
+                width="200"
+                trigger="hover"
+                >
+                <div class="customer-profix">
+                  <div class="detail">
+                    年龄：{{ items.age }}
+                  </div>
+                  <div class="detail">
+                    电话：{{ items.phone }}
+                  </div>
+                  <div class="detail">
+                    邮箱：{{ items.email }}
+                  </div>
+                </div>
+                <div class="avatar" slot="reference">
+                  <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+                </div>
+              </el-popover>
               <span class="name" style="color: #666">
                 {{ items.username }}
                 <span style="color: #666; font-size: .9rem">（离线）</span>
@@ -192,6 +231,7 @@
           </div>
         </div>
       </div>
+      <MyDrawer ref="drawer"/>
     </div>
   </div>
 </template>
@@ -200,8 +240,10 @@
 import Initial from "./mixins/initial";
 import Operation from "./mixins/operation";
 import Property from "./mixins/property";
+import MyDrawer from './components/drawer'
 export default {
-  mixins: [Initial, Operation, Property]
+  mixins: [Initial, Operation, Property],
+  components: { MyDrawer }
 };
 </script>
 
