@@ -16,9 +16,19 @@ export default {
       try {
         this.$setMemorySes('user', "")
         this.socketInRoom.close()
-        this.socketInGroup && this.socketInGroup.close()
-        this.socketInFace && this.socketInFace.close()
+        this.disConnect()
       } catch (e) { }
+    },
+    // 断开websocket连接
+    disConnect() {
+      this.socketInGroup && (
+        this.socketInGroup.close(),
+        this.socketInGroup = ""
+      )
+      this.socketInFace && (
+        this.socketInFace.close(),
+        this.socketInFace = ""
+      )
     },
     // 存储聊天记录
     sendRecord(type) {
@@ -137,7 +147,7 @@ export default {
       this.chatObj = {
         username: '群聊'
       }
-      this.socketInFace && this.socketInFace.close()
+      this.disConnect()
       if (window.WebSocket) {
         this.socketInGroup = new WebSocket(`${websocketInGroupUrl}${uid}`)
         this.socketInGroup.onopen = e => {
@@ -145,7 +155,6 @@ export default {
         }
         this.socketInGroup.onmessage = e => {
           this.willSendContentList.push(JSON.parse(e.data))
-          console.log(JSON.parse(e.data))
           this.$nextTick(() => {
             this.initialChatHeight()
           })
@@ -164,7 +173,7 @@ export default {
     connectWebsocketInFace(item) {
       this.chatObj = item
       this.isGroup = false
-      this.socketInFace && this.socketInFace.close()
+      this.disConnect()
       if (window.WebSocket) {
         this.socketInFace = new WebSocket(`${websocketInFaceUrl}${Number(this.user.key) + Number(this.chatObj.key)}`)
         this.socketInFace.onopen = e => {
