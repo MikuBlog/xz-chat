@@ -70,10 +70,10 @@
               flexDirection: items.sender !== user.username ? 'row' : 'row-reverse',
             }"
             >
-              <div class="avatar">
+              <div class="avatar" v-if="items.type !== 'withdraw'">
                 <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
               </div>
-              <el-card shadow="always" class="card">
+              <el-card shadow="always" class="card" v-if="items.type !== 'withdraw'">
                 <el-popover
                   placement="bottom"
                   width="150"
@@ -106,6 +106,13 @@
                   <div>{{items.content}}</div>
                 </div>
               </el-card>
+              <div class="withdraw-box" v-else>
+                <div class="widthraw-content">
+                  <div align="center">{{ $formatDate(items.createtime, true) }}</div>
+                  <span>"{{ items.sender }}"</span>
+                  <span>{{ items.content }}</span>
+                </div>
+              </div>
             </div>
             <div
               class="list"
@@ -117,10 +124,10 @@
               flexDirection: items.sender !== user.username ? 'row' : 'row-reverse',
             }"
             >
-              <div class="avatar">
+              <div class="avatar" v-if="items.type !== 'withdraw'">
                 <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
               </div>
-              <el-card shadow="always" class="card">
+              <el-card shadow="always" class="card" v-if="items.type !== 'withdraw'">
                 <el-popover
                   placement="bottom"
                   width="150"
@@ -153,6 +160,13 @@
                   <div>{{items.content}}</div>
                 </div>
               </el-card>
+              <div class="withdraw-box" v-else>
+                <div class="widthraw-content">
+                  <div align="center">{{ $formatDate(items.createtime, true) }}</div>
+                  <span>"{{ items.sender }}"</span>
+                  <span>{{ items.content }}</span>
+                </div>
+              </div>
             </div>
           </el-scrollbar>
         </div>

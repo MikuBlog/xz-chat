@@ -155,6 +155,20 @@
   height: 100%;
 }
 
+.right-list .content-list .list .withdraw-box {
+  position: relative;
+  margin: .5rem auto;
+}
+
+.right-list .content-list .list .withdraw-box .widthraw-content {
+  position: relative;
+  display: inline-block;
+  background: #666;
+  padding: 10px;
+  color: #fefefe;
+  font-size: .7rem;
+}
+
 .right-list .content-list .list .card {
   position: relative;
   display: inline-block;

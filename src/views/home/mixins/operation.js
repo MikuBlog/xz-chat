@@ -51,6 +51,18 @@ export default {
         }
       })
     },
+    // 存储撤回记录
+    sendWithdrawRecord(obj) {
+      this.$.ajax({
+        url: `${requestUrl}/api/chat/insertrecord`,
+        type: 'post',
+        data: obj
+      }).then(result => {
+        if (result.status === 'error') {
+          this.$errorMsg("服务器出错")
+        }
+      })
+    },
     // 初始化聊天内容高度
     initialChatHeight() {
       const viewScroll = document.querySelectorAll('.el-scrollbar__wrap')[1]
@@ -89,7 +101,7 @@ export default {
       this.page = 1
       this.getRecordLoading = true
       return this.$.ajax({
-        url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&mapkey=${Number(this.user.key) + Number(this.chatObj.key)}`,
+        url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&mapkey=${Number(this.user.key) + Number(this.chatObj.key)}&type=face`,
         type: "get"
       }).then(result => {
         this.initialRecordList(result.list)
@@ -104,7 +116,7 @@ export default {
       this.page = 1
       this.getRecordLoading = true
       return this.$.ajax({
-        url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&type=group`,
+        url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&recipient=${this.chatObj.username}&type=group`,
         type: "get"
       }).then(result => {
         this.initialRecordList(result.list)
@@ -149,7 +161,6 @@ export default {
     },
     // 撤回信息
     withdrawContent(item) {
-      console.log(item)
       this.$.ajax({
         url: `${requestUrl}/api/chat/withdrawrecord?key=${item.key}&sender=${item.sender}`,
         type: "get"
@@ -162,8 +173,7 @@ export default {
             ? this.socketInGroup.send(obj)
             : this.socketInFace.send(obj)
           this.widthdrawSender = result.sender
-          console.log(result.sender)
-        }else {
+        } else {
           this.$errorMsg(`${result.msg}`)
         }
       })
@@ -171,27 +181,23 @@ export default {
     // 发送撤回信息
     sendWithdrawContent() {
       this.sendTime = this.$formatDate(new Date(), true)
+      const obj = {
+        content: "撤回了一条消息",
+        sender: this.user.username,
+        recipient: this.chatObj.username,
+        type: "withdraw",
+        createtime: this.sendTime,
+        key: new Date(this.sendTime).getTime()
+      }
       this.isGroup
         ? (
-          this.socketInGroup.send(JSON.stringify({
-            content: "撤回了一条消息",
-            sender: this.user.username,
-            recipient: 'group',
-            type: "group",
-            createtime: this.sendTime,
-            key: new Date(this.sendTime).getTime()
-          }))
+          this.socketInGroup.send(JSON.stringify(obj))
         )
         : (
-          this.socketInFace.send(JSON.stringify({
-            content: "撤回了一条消息",
-            sender: this.user.username,
-            recipient: this.chatObj.username,
-            type: "face",
-            createtime: this.sendTime,
-            key: new Date(this.sendTime).getTime()
-          }))
+          obj.mapkey = `${Number(this.user.key) + Number(this.chatObj.key)}`,
+          this.socketInFace.send(JSON.stringify(obj))
         )
+      this.sendWithdrawRecord(obj)
     },
     // 群聊连接
     connectWebsocketInGroup(uid) {
@@ -208,11 +214,11 @@ export default {
         this.socketInGroup.onmessage = e => {
           const data = JSON.parse(e.data)
           if (data.type === 'update') {
-            this.getGroupRecordList()
-            // (async () => {
-            //   await this.getGroupRecordList()
-            //   this.widthdrawSender === this.user.username && this.sendWithdrawContent()
-            // })();
+              (async () => {
+                await this.getGroupRecordList()
+                this.widthdrawSender === this.user.username && this.sendWithdrawContent()
+                this.widthdrawSender = ""
+              })();
           } else {
             this.willSendContentList.push(JSON.parse(e.data))
           }
@@ -243,11 +249,11 @@ export default {
         this.socketInFace.onmessage = e => {
           const data = JSON.parse(e.data)
           if (data.type === 'update') {
-            this.getRecordList()
-            // (async () => {
-            //   await this.getRecordList()
-            //   this.widthdrawSender === this.user.username && this.sendWithdrawContent()
-            // })();
+            (async () => {
+              await this.getRecordList()
+              this.widthdrawSender === this.user.username && this.sendWithdrawContent()
+              this.widthdrawSender = ""
+            })();
           } else {
             this.willSendContentList.push(JSON.parse(e.data))
           }

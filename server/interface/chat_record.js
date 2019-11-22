@@ -107,6 +107,7 @@ function getRecord(req, res) {
           mapkey: data.mapkey
         }
       )
+      .where('type').in([ 'face', 'withdraw' ])
       .sort({ createtime: 'desc' })
       .skip((data.page - 1) * size)
       .limit(+size)
@@ -129,9 +130,10 @@ function getRecord(req, res) {
       .find(
         {
           isshow: true,
-          type: 'group'
+          recipient: data.recipient
         }
       )
+      .where('type').in([ 'group', 'withdraw' ])
       .sort({ createtime: 'desc' })
       .skip((data.page - 1) * size)
       .limit(+size)

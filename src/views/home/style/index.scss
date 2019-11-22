@@ -133,6 +133,18 @@
           height: 100%;
         }
       }
+      .withdraw-box {
+        position: relative;
+        margin: .5rem auto;
+        .widthraw-content {
+          position: relative;
+          display: inline-block;
+          background: #666;
+          padding: 10px;
+          color: #fefefe;
+          font-size: .7rem;
+        }
+      }
       .card {
         position: relative;
         display: inline-block;
@@ -149,7 +161,7 @@
           color: #666;
         }
       }
-    }
+    } 
     .menu-horizontal-scrollbar {
       ::v-deep {
         .el-scrollbar__wrap {
