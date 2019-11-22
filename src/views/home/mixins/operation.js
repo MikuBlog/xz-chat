@@ -39,9 +39,10 @@ export default {
           content: this.textarea,
           recipient: this.chatObj.username,
           sender: this.user.username,
-          createtime: new Date(),
+          createtime: this.sendTime,
           mapkey: `${Number(this.user.key) + Number(this.chatObj.key)}`,
-          type: type
+          key: new Date(this.sendTime).getTime(),
+          type: type,
         }
       }).then(result => {
         this.loading = false
@@ -87,7 +88,7 @@ export default {
     getRecordList() {
       this.page = 1
       this.getRecordLoading = true
-      this.$.ajax({
+      return this.$.ajax({
         url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&mapkey=${Number(this.user.key) + Number(this.chatObj.key)}`,
         type: "get"
       }).then(result => {
@@ -102,7 +103,7 @@ export default {
     getGroupRecordList() {
       this.page = 1
       this.getRecordLoading = true
-      this.$.ajax({
+      return this.$.ajax({
         url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&type=group`,
         type: "get"
       }).then(result => {
@@ -116,19 +117,24 @@ export default {
     // 向服务器发送推送
     sendContent() {
       if (this.textarea && this.chatObj.username) {
+        this.sendTime = this.$formatDate(new Date(), true)
         if (this.isGroup) {
           this.socketInGroup.send(JSON.stringify({
             content: this.textarea,
             sender: this.user.username,
             recipient: 'group',
-            type: "group"
+            type: "group",
+            createtime: this.sendTime,
+            key: new Date(this.sendTime).getTime()
           }))
         } else {
           this.socketInFace.send(JSON.stringify({
             content: this.textarea,
             sender: this.user.username,
             recipient: this.chatObj.username,
-            type: "face"
+            type: "face",
+            createtime: this.sendTime,
+            key: new Date(this.sendTime).getTime()
           }))
         }
         this.sendRecord(this.isGroup ? 'group' : 'face')
@@ -137,9 +143,55 @@ export default {
       }
     },
     sendContentQuick(e) {
-      if(e.keyCode === 10) {
+      if (e.keyCode === 10) {
         this.sendContent()
       }
+    },
+    // 撤回信息
+    withdrawContent(item) {
+      console.log(item)
+      this.$.ajax({
+        url: `${requestUrl}/api/chat/withdrawrecord?key=${item.key}&sender=${item.sender}`,
+        type: "get"
+      }).then(result => {
+        if (result.status === 'ok') {
+          const obj = JSON.stringify({
+            type: "update"
+          })
+          this.isGroup
+            ? this.socketInGroup.send(obj)
+            : this.socketInFace.send(obj)
+          this.widthdrawSender = result.sender
+          console.log(result.sender)
+        }else {
+          this.$errorMsg(`${result.msg}`)
+        }
+      })
+    },
+    // 发送撤回信息
+    sendWithdrawContent() {
+      this.sendTime = this.$formatDate(new Date(), true)
+      this.isGroup
+        ? (
+          this.socketInGroup.send(JSON.stringify({
+            content: "撤回了一条消息",
+            sender: this.user.username,
+            recipient: 'group',
+            type: "group",
+            createtime: this.sendTime,
+            key: new Date(this.sendTime).getTime()
+          }))
+        )
+        : (
+          this.socketInFace.send(JSON.stringify({
+            content: "撤回了一条消息",
+            sender: this.user.username,
+            recipient: this.chatObj.username,
+            type: "face",
+            createtime: this.sendTime,
+            key: new Date(this.sendTime).getTime()
+          }))
+        )
     },
     // 群聊连接
     connectWebsocketInGroup(uid) {
@@ -154,7 +206,16 @@ export default {
           this.getGroupRecordList()
         }
         this.socketInGroup.onmessage = e => {
-          this.willSendContentList.push(JSON.parse(e.data))
+          const data = JSON.parse(e.data)
+          if (data.type === 'update') {
+            this.getGroupRecordList()
+            // (async () => {
+            //   await this.getGroupRecordList()
+            //   this.widthdrawSender === this.user.username && this.sendWithdrawContent()
+            // })();
+          } else {
+            this.willSendContentList.push(JSON.parse(e.data))
+          }
           this.$nextTick(() => {
             this.initialChatHeight()
           })
@@ -180,7 +241,16 @@ export default {
           this.getRecordList()
         }
         this.socketInFace.onmessage = e => {
-          this.willSendContentList.push(JSON.parse(e.data))
+          const data = JSON.parse(e.data)
+          if (data.type === 'update') {
+            this.getRecordList()
+            // (async () => {
+            //   await this.getRecordList()
+            //   this.widthdrawSender === this.user.username && this.sendWithdrawContent()
+            // })();
+          } else {
+            this.willSendContentList.push(JSON.parse(e.data))
+          }
           this.$nextTick(() => {
             this.initialChatHeight()
           })

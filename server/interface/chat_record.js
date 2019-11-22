@@ -58,7 +58,7 @@ function insertAllRecord(req, res) {
 // 撤回聊天记录
 function withdrawRecord(req, res) {
   const data = req.urlQuery
-  if (!data.id) {
+  if (!data.key || !data.sender) {
     res.send({
       status: "error",
       msg: "参数不正确或缺少参数"
@@ -67,18 +67,20 @@ function withdrawRecord(req, res) {
   }
   chatRecordSchema
     .updateOne(
-      { id: data.id },
+      { key: data.key },
       { $set: { isshow: false } },
       err => {
         if (err) {
           res.send({
             status: "error",
-            msg: "修改失败"
+            msg: "撤回失败",
+            sender: data.sender
           })
         } else {
           res.send({
             status: "ok",
-            msg: "撤回成功"
+            msg: "撤回成功",
+            sender: data.sender
           })
         }
       }

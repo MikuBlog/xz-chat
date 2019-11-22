@@ -14,6 +14,8 @@ export default {
       getRecordLoading: false,
       isonline: false,
       isGroup: false,
+      sendTime: "",
+      widthdrawSender: "",
       src: "http://myinterface.xuanzai.top/getPicture?type=头像&id=1",
       textarea: "",
       ExistingContentList: [],

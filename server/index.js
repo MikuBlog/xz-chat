@@ -53,7 +53,7 @@ app.get('/api/user/logout', urlQuery.urlQuery, account.logout)
 // 获取聊天记录
 app.get('/api/chat/getrecord', urlQuery.urlQuery, chatRecord.getRecord)
 // 撤回聊天记录
-app.post('/api/chat/withdrawrecord', urlQuery.urlQuery, chatRecord.withdrawRecord)
+app.get('/api/chat/withdrawrecord', urlQuery.urlQuery, chatRecord.withdrawRecord)
 // 记录聊天记录
 app.post('/api/chat/insertrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertRecord)
 // 批量记录聊天记录

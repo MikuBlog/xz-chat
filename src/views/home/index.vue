@@ -74,11 +74,37 @@
                 <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
               </div>
               <el-card shadow="always" class="card">
-                <div class="date-time">
-                  <span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>
-                  {{ $formatDate(items.createtime, true) }}
+                <el-popover
+                  placement="bottom"
+                  width="150"
+                  trigger="click"
+                  v-if="items.sender === user.username"
+                  style="padding: 0"
+                >
+                  <div align="center">
+                    <el-button type="text" @click="withdrawContent(items)">撤回信息</el-button>
+                  </div>
+                  <div slot="reference">
+                    <div class="date-time">
+                      <span
+                        style="margin-right: 1rem"
+                        v-if="items.type === 'group'"
+                      >{{ items.sender }}</span>
+                      {{ $formatDate(items.createtime, true) }}
+                    </div>
+                    <div>{{items.content}}</div>
+                  </div>
+                </el-popover>
+                <div v-else>
+                  <div class="date-time">
+                    <span
+                      style="margin-right: 1rem"
+                      v-if="items.type === 'group'"
+                    >{{ items.sender }}</span>
+                    {{ $formatDate(items.createtime, true) }}
+                  </div>
+                  <div>{{items.content}}</div>
                 </div>
-                <div>{{items.content}}</div>
               </el-card>
             </div>
             <div
@@ -87,7 +113,7 @@
               :keys="items._id"
               :style="{
               textAlign: items.sender !== user.username ? 'left' : 'right',
-              display: items.sender !== user.username ? 'block' : 'flex',
+              display: 'flex',
               flexDirection: items.sender !== user.username ? 'row' : 'row-reverse',
             }"
             >
@@ -95,11 +121,37 @@
                 <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
               </div>
               <el-card shadow="always" class="card">
-                <div class="date-time">
-                  <span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>
-                  {{ $formatDate(items.createtime, true) }}
+                <el-popover
+                  placement="bottom"
+                  width="150"
+                  trigger="click"
+                  v-if="items.sender === user.username"
+                  style="padding: 0"
+                >
+                  <div align="center">
+                    <el-button type="text" @click="withdrawContent(items)">撤回信息</el-button>
+                  </div>
+                  <div slot="reference">
+                    <div class="date-time">
+                      <span
+                        style="margin-right: 1rem"
+                        v-if="items.type === 'group'"
+                      >{{ items.sender }}</span>
+                      {{ $formatDate(items.createtime, true) }}
+                    </div>
+                    <div>{{items.content}}</div>
+                  </div>
+                </el-popover>
+                <div v-else>
+                  <div class="date-time">
+                    <span
+                      style="margin-right: 1rem"
+                      v-if="items.type === 'group'"
+                    >{{ items.sender }}</span>
+                    {{ $formatDate(items.createtime, true) }}
+                  </div>
+                  <div>{{items.content}}</div>
                 </div>
-                <div>{{items.content}}</div>
               </el-card>
             </div>
           </el-scrollbar>
