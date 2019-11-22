@@ -11,7 +11,8 @@ function server(ws, req) {
         createtime: getDate(),
         content: msg.content,
         sender: msg.sender,
-        recipient: msg.recipient
+        recipient: msg.recipient,
+        type: msg.type
       }))
     })
   }

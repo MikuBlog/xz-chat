@@ -63,6 +63,6 @@ app.post('/api/chat/insertallrecord', bodyParser.urlencoded({ extended: false })
 app.ws('/inface/:uid', inFace.server)
 // 一对多传输
 app.ws('/inroom', inRoom.server)
-app.ws('/inGroup/:uid', inGroup.server)
+app.ws('/ingroup/:uid', inGroup.server)
 
 app.listen(8888)

@@ -61,7 +61,7 @@
             >
               <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
               <el-card shadow="always" class="card">
-                <div class="date-time"><span style="margin-right: 1rem">{{ items.sender }}</span>{{ $formatDate(items.createtime, true) }}</div>
+                <div class="date-time"><span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>{{ $formatDate(items.createtime, true) }}</div>
                 <div>{{items.content}}</div>
               </el-card>
             </div>
@@ -77,7 +77,7 @@
             >
               <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
               <el-card shadow="always" class="card">
-                <div class="date-time">{{ $formatDate(items.createtime, true) }}</div>
+                <div class="date-time"><span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>{{ $formatDate(items.createtime, true) }}</div>
                 <div>{{items.content}}</div>
               </el-card>
             </div>
@@ -100,6 +100,7 @@
               :rows="8"
               placeholder="输入聊天内容"
               v-model="textarea"
+              @keypress.native="sendContentQuick"
             ></el-input>
           </div>
         </div>

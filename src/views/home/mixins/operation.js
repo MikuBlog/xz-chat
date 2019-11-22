@@ -108,19 +108,26 @@ export default {
           this.socketInFace.send(JSON.stringify({
             content: this.textarea,
             sender: this.user.username,
-            recipient: 'group'
+            recipient: 'group',
+            type: "group"
           }))
         } else {
           this.socketInFace.send(JSON.stringify({
             content: this.textarea,
             sender: this.user.username,
-            recipient: this.chatObj.username
+            recipient: this.chatObj.username,
+            type: "face"
           }))
         }
       }
       this.sendRecord(this.isGroup ? 'group' : 'face')
       this.loading = true
       this.textarea = ""
+    },
+    sendContentQuick(e) {
+      if(e.keyCode === 10) {
+        this.sendContent()
+      }
     },
     // 群聊连接
     connectWebsocketInGroup(uid) {
@@ -136,6 +143,7 @@ export default {
         }
         this.socketInFace.onmessage = e => {
           this.willSendContentList.push(JSON.parse(e.data))
+          console.log(JSON.parse(e.data))
           this.$nextTick(() => {
             this.initialChatHeight()
           })
@@ -153,6 +161,7 @@ export default {
     // 面对面连接
     connectWebsocketInFace(item) {
       this.chatObj = item
+      this.isGroup = false
       this.socketInFace && this.socketInFace.close()
       if (window.WebSocket) {
         this.socketInFace = new WebSocket(`${websocketInFaceUrl}${Number(this.user.key) + Number(this.chatObj.key)}`)

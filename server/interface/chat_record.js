@@ -29,7 +29,7 @@ function insertRecord(req, res) {
 function insertAllRecord(req, res) {
   const data = req.body
   const list = JSON.parse(data.contentList), dataArr = []
-  if(!list.length) {
+  if (!list.length) {
     res.send({
       status: "ok",
       msg: "没有任何聊天记录"
@@ -97,56 +97,56 @@ function getRecord(req, res) {
     })
     return
   }
-  if(data.mapkey) {
+  if (data.mapkey) {
     chatRecordSchema
-    .find(
-      {
-        isshow: true,
-        mapkey: data.mapkey
-      }
-    )
-    .sort({ createtime: 'desc' })
-    .skip((data.page - 1) * size)
-    .limit(+size)
-    .exec((err, result) => {
-      if (err) {
-        res.send({
-          status: "error",
-          msg: "服务器出错"
-        })
-      } else {
-        res.send({
-          status: "ok",
-          msg: "获取聊天记录成功",
-          list: result
-        })
-      }
-    })
-  }else {
+      .find(
+        {
+          isshow: true,
+          mapkey: data.mapkey
+        }
+      )
+      .sort({ createtime: 'desc' })
+      .skip((data.page - 1) * size)
+      .limit(+size)
+      .exec((err, result) => {
+        if (err) {
+          res.send({
+            status: "error",
+            msg: "服务器出错"
+          })
+        } else {
+          res.send({
+            status: "ok",
+            msg: "获取聊天记录成功",
+            list: result
+          })
+        }
+      })
+  } else {
     chatRecordSchema
-    .find(
-      {
-        isshow: true,
-        type: 'group'
-      }
-    )
-    .sort({ createtime: 'desc' })
-    .skip((data.page - 1) * size)
-    .limit(+size)
-    .exec((err, result) => {
-      if (err) {
-        res.send({
-          status: "error",
-          msg: "服务器出错"
-        })
-      } else {
-        res.send({
-          status: "ok",
-          msg: "获取聊天记录成功",
-          list: result
-        })
-      }
-    })
+      .find(
+        {
+          isshow: true,
+          type: 'group'
+        }
+      )
+      .sort({ createtime: 'desc' })
+      .skip((data.page - 1) * size)
+      .limit(+size)
+      .exec((err, result) => {
+        if (err) {
+          res.send({
+            status: "error",
+            msg: "服务器出错"
+          })
+        } else {
+          res.send({
+            status: "ok",
+            msg: "获取聊天记录成功",
+            list: result
+          })
+        }
+      })
   }
 }
 
