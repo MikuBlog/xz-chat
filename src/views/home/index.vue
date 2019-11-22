@@ -91,7 +91,9 @@
               flexDirection: items.sender !== user.username ? 'row' : 'row-reverse',
             }"
             >
-              <el-avatar :size="50" src="../../assets/avatar/user.jpg" fit="cover" class="avatar"></el-avatar>
+              <div class="avatar">
+                <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+              </div>
               <el-card shadow="always" class="card">
                 <div class="date-time">
                   <span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>
