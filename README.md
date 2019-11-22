@@ -1,29 +1,25 @@
-# chat
+# 多人聊天系统
 
-## Project setup
-```
-npm install
-```
+<br/>
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 语言
 
-### Compiles and minifies for production
-```
-npm run build
-```
++ Html
++ css
++ JavaScript
 
-### Run your tests
-```
-npm run test
-```
+## 框架
 
-### Lints and fixes files
-```
-npm run lint
-```
++ vue
++ express
++ mongoose
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 工具
+
++ vscode
++ MongoDB Compass Community（数据库可视化工具）
+
+## 服务器
+
++ 阿里云（centos 7）
++ nginx（1.14.2）
