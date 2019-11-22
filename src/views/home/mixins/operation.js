@@ -107,7 +107,7 @@ export default {
     sendContent() {
       if (this.textarea && this.chatObj.username) {
         if (this.isGroup) {
-          this.socketInFace.send(JSON.stringify({
+          this.socketInGroup.send(JSON.stringify({
             content: this.textarea,
             sender: this.user.username,
             recipient: 'group',
@@ -121,10 +121,10 @@ export default {
             type: "face"
           }))
         }
+        this.sendRecord(this.isGroup ? 'group' : 'face')
+        this.loading = true
+        this.textarea = ""
       }
-      this.sendRecord(this.isGroup ? 'group' : 'face')
-      this.loading = true
-      this.textarea = ""
     },
     sendContentQuick(e) {
       if(e.keyCode === 10) {

@@ -3,7 +3,9 @@
     <div class="chat-box">
       <div class="left-list">
         <div class="header">
-          <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
+          <div class="avatar">
+            <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+          </div>
           <div class="profile">
             <div class="name" style="font-size: 1.1rem">
               我
@@ -19,27 +21,36 @@
         <div class="customer-list">
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
             <div class="list" @click="connectWebsocketInGroup(1)">
-              <el-avatar :size="50" src="http://myinterface.xuanzai.top/getPicture?type=%E5%A4%B4%E5%83%8F&id=12" fit="cover" class="avatar"></el-avatar>
-              <span class="name" style="color: #fefefe">
-                群聊
-              </span>
+              <div class="avatar">
+                <img src="../../assets/avatar/group.jpg" alt="group.jpg" />
+              </div>
+              <span class="name" style="color: #fefefe">群聊</span>
             </div>
-            <div class="list" v-for="items in onlineUserList" @click="connectWebsocketInFace(items)">
-              <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
+            <div
+              class="list"
+              v-for="items in onlineUserList"
+              @click="connectWebsocketInFace(items)"
+            >
+              <div class="avatar">
+                <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+              </div>
+              <!-- <el-avatar :size="50" src="../../assets/avatar/user.jpg" fit="cover" class="avatar"></el-avatar> -->
               <span class="name" style="color: #fefefe">
                 {{ items.username }}
-                <span
-                  style="color: #666; font-size: .9rem"
-                >（在线）</span>
+                <span style="color: #666; font-size: .9rem">（在线）</span>
               </span>
             </div>
-            <div class="list" v-for="items in outlineUserList" @click="connectWebsocketInFace(items)">
-              <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
+            <div
+              class="list"
+              v-for="items in outlineUserList"
+              @click="connectWebsocketInFace(items)"
+            >
+              <div class="avatar">
+                <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+              </div>
               <span class="name" style="color: #666">
                 {{ items.username }}
-                <span
-                  style="color: #666; font-size: .9rem"
-                >（离线）</span>
+                <span style="color: #666; font-size: .9rem">（离线）</span>
               </span>
             </div>
           </el-scrollbar>
@@ -55,13 +66,18 @@
               :keys="items._id"
               :style="{
               textAlign: items.sender !== user.username ? 'left' : 'right',
-              display: items.sender !== user.username ? 'block' : 'flex',
+              display: 'flex',
               flexDirection: items.sender !== user.username ? 'row' : 'row-reverse',
             }"
             >
-              <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
+              <div class="avatar">
+                <img src="../../assets/avatar/user.jpg" alt="user.jpg" />
+              </div>
               <el-card shadow="always" class="card">
-                <div class="date-time"><span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>{{ $formatDate(items.createtime, true) }}</div>
+                <div class="date-time">
+                  <span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>
+                  {{ $formatDate(items.createtime, true) }}
+                </div>
                 <div>{{items.content}}</div>
               </el-card>
             </div>
@@ -75,9 +91,12 @@
               flexDirection: items.sender !== user.username ? 'row' : 'row-reverse',
             }"
             >
-              <el-avatar :size="50" :src="src" fit="cover" class="avatar"></el-avatar>
+              <el-avatar :size="50" src="../../assets/avatar/user.jpg" fit="cover" class="avatar"></el-avatar>
               <el-card shadow="always" class="card">
-                <div class="date-time"><span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>{{ $formatDate(items.createtime, true) }}</div>
+                <div class="date-time">
+                  <span style="margin-right: 1rem" v-if="items.type === 'group'">{{ items.sender }}</span>
+                  {{ $formatDate(items.createtime, true) }}
+                </div>
                 <div>{{items.content}}</div>
               </el-card>
             </div>

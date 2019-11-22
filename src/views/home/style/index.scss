@@ -16,7 +16,7 @@
   bottom: 0;
   z-index: -2;
   filter: blur(10px);
-  background-image: url(http://myinterface.xuanzai.top/getPicture?type=2233&id=34);
+  background-image: url(../../../assets/login/u15.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -50,8 +50,16 @@
     }
     .avatar {
       position: relative;
+      border-radius: 50%;
+      overflow: hidden;
+      width: 50px;
+      height: 50px;
       top: 0.5rem;
       margin: 0.5rem 1.5rem 0 1rem;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
     .name {
       position: relative;
@@ -70,9 +78,16 @@
       cursor: pointer;
       .avatar {
         position: relative;
+        border-radius: 50%;
+        overflow: hidden;
         width:50px;
+        height: 50px;
         top: 0.5rem;
         margin: 0.5rem 1.5rem 0 1rem;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
       .name {
         position: relative;
@@ -106,6 +121,18 @@
     .list {
       position: relative;
       margin: 1rem 0 0 0.5rem;
+      .avatar {
+        position: relative;
+        border-radius: 50%;
+        overflow: hidden;
+        width:50px;
+        height: 50px;
+        top: 0.5rem;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
       .card {
         position: relative;
         display: inline-block;
