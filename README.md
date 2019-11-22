@@ -1,29 +1,28 @@
-# chat
+<h1 align="center">多人聊天系统</h1>
 
-## Project setup
-```
-npm install
-```
+第一版多人聊天系统，其中包含一个群聊室提供群聊功能，以及多个用户相互私聊功能。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+<br/>
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 语言
 
-### Run your tests
-```
-npm run test
-```
++ Html
++ css
++ JavaScript
 
-### Lints and fixes files
-```
-npm run lint
-```
+## 框架
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
++ vue（前端框架）
++ express（后台框架）
++ express-ws（websocket库）
++ mongoose（mongoDB数据库操作库）
+
+## 工具
+
++ vscode
++ MongoDB Compass Community（数据库可视化工具）
+
+## 服务器
+
++ 阿里云（centos 7）
++ nginx（1.14.2）
