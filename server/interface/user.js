@@ -132,6 +132,7 @@ function logout(req, res) {
     )
 }
 
+// 获取用户列表
 function getUserList(req, res) {
   const data = req.urlQuery
   accountSchema
@@ -152,14 +153,89 @@ function getUserList(req, res) {
     })
 }
 
-function editUserMsg() {
+// 获取用户信息
+function getUserMsg(req, res) {
+  const data = req.urlQuery
+  if (!data.username) {
+    res.send({
+      status: "error",
+      msg: "参数不正确或缺少参数"
+    })
+    return
+  }
+  accountSchema
+    .find(
+      { username: data.username },
+      (err, result) => {
+        if (err) {
+          res.send({
+            status: "error",
+            msg: "用户不存在"
+          })
+        } else {
+          res.send({
+            status: "ok",
+            msg: "获取用户信息成功",
+            data: result[0]
+          })
+        }
+      }
+    )
+}
 
+// 修改用户信息
+function editUserMsg(req, res) {
+  const data = req.body
+  if (!data.username || !data.age || !data.name || !data.phone || !data.password || !data.email) {
+    res.send({
+      status: "error",
+      msg: "参数不正确或缺少参数"
+    })
+    return
+  }
+  new Promise((resolve, reject) => {
+    accountSchema
+      .updateOne(
+        { username: data.username },
+        { $set: { name: data.name, age: data.age, phone: data.phone, email: data.email, password: data.password } },
+        err => {
+          if (err) {
+            reject("服务器出错")
+          } else {
+            resolve()
+          }
+        }
+      )
+  }).then(() => {
+    return new Promise((resolve, reject) => {
+      accountSchema
+        .find(
+          { username: data.username },
+          (err, result) => {
+            if (err) {
+              reject("服务器出错")
+            } else {
+              res.send({
+                status: "ok",
+                msg: "修改用户信息成功",
+                data: result[0]
+              })
+            }
+          }
+        )
+    })
+  }).catch(e => {
+    res.send({
+      status: "error",
+      msg: e
+    })
+  })
 }
 
 // 上传用户头像
 function editAvatar(req, res) {
   const data = req.body
-  if(!data.username) {
+  if (!data.username) {
     res.send({
       status: "errror",
       msg: "参数不正确或缺少参数"
@@ -171,12 +247,12 @@ function editAvatar(req, res) {
       { username: data.username },
       { $set: { avatar: `/source/images/${data.filename}` } },
       err => {
-        if(err) {
+        if (err) {
           res.send({
             status: "error",
             msg: "修改头像失败"
           })
-        }else {
+        } else {
           res.send({
             status: "ok",
             msg: "修改头像成功",
@@ -192,5 +268,7 @@ module.exports = {
   register: register,
   logout: logout,
   getUserList: getUserList,
-  editAvatar: editAvatar
+  getUserMsg: getUserMsg,
+  editAvatar: editAvatar,
+  editUserMsg: editUserMsg
 }

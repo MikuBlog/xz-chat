@@ -3,9 +3,15 @@ export default {
     this.logout()
   },
   methods: {
-    // 展开抽屉
-    showSetting() {
-      this.$refs.drawer.drawer = true;
+    showEditUserBox() {
+      const 
+        userForm = this.$refs.userForm.ruleForm,
+        user = this.user
+      userForm.name = user.name
+      userForm.age = user.age
+      userForm.phone = user.phone
+      userForm.email = user.email
+      this.$refs.userForm.dialog = true
     },
     // 登出
     logout() {

@@ -8,14 +8,14 @@ export default {
   created() {
     document.title = "聊天室"
     // 初始化用户信息
-    this.initialProfile()
+    this.getUserMsg()
   },
   mounted() {
     // 初始化滚动监听
     this.initialListener()
   },
   methods: {
-    // 初始化用户信息
+    // 初始化用户列表
     initialUserList(onlineUserList, outlineUserList) {
       this.onlineUserList = onlineUserList
       this.outlineUserList = outlineUserList
@@ -59,20 +59,33 @@ export default {
       };
     },
     // 初始化用户信息
-    initialProfile() {
+    initialProfile(data) {
       if(!this.$getMemorySes('user')) {
         this.$router.push('/login')
       }else {
-        for (let key in this.$getMemorySes('user')) {
+        for (let key in data) {
           if(key === 'avatar') {
-            this.user[key] = convertHttp(this.$getMemorySes('user')[key])
+            this.user[key] = convertHttp(data[key])
           }else {
-            this.user[key] = this.$getMemorySes('user')[key]
+            this.user[key] = data[key]
           }
         }
-        // 进入房间建立连接
-        this.connectWebsocketInRoom()
       }
+    },
+    // 获取用户信息
+    getUserMsg() {
+      this.$.ajax({
+        url: `${requestUrl}/api/user/getusermsg?username=${this.$getMemorySes('user').username}`,
+        type: "get"
+      }).then(result => {
+        if(result.status === 'ok') {
+          this.initialProfile(result.data)
+          // 进入房间建立连接
+          this.connectWebsocketInRoom()
+        }else {
+          this.$errorMsg(result.msg)
+        }
+      })
     },
   },
 }

@@ -9,7 +9,7 @@ function server(ws, req) {
   ws.onmessage = msg => {
     const data = JSON.parse(msg.data)
     onlineUserList = onlineUserList.filter(val => data.username !== val.username)
-    if (data.type === 'online') {
+    if (data.type === 'online' && data.username) {
       onlineUserList.push(data)
     }
     new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="setting" @click="showSetting">
+    <div class="setting" @click="$refs.drawer.drawer = true">
       <i class="el-icon-setting"></i>
     </div>
     <div class="chat-box">
@@ -12,6 +12,7 @@
               <div class="detail">电话：{{ user.phone }}</div>
               <div class="detail">邮箱：{{ user.email }}</div>
             </div>
+            <el-button type="primary" size="small" circle icon="el-icon-edit" style="float: right" @click="showEditUserBox"></el-button>
             <div class="avatar" @click="$refs.editAvatar.dialogVisible = true" slot="reference">
               <img :src="user.avatar" alt="user.jpg" />
             </div>
@@ -53,7 +54,7 @@
               </el-popover>
               <!-- <el-avatar :size="50" src="../../assets/avatar/user.jpg" fit="cover" class="avatar"></el-avatar> -->
               <span class="name" style="color: #fefefe">
-                {{ items.username }}
+                {{ items.name }}
                 <span style="color: #666; font-size: .9rem">（在线）</span>
               </span>
             </div>
@@ -73,7 +74,7 @@
                 </div>
               </el-popover>
               <span class="name" style="color: #666">
-                {{ items.username }}
+                {{ items.name }}
                 <span style="color: #666; font-size: .9rem">（离线）</span>
               </span>
             </div>
@@ -81,7 +82,7 @@
         </div>
       </div>
       <div class="right-list" v-loading="getRecordLoading">
-        <div class="header-profile">{{ chatObj.username }}</div>
+        <div class="header-profile">{{ chatObj.name }}</div>
         <div class="content-list">
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
             <div
@@ -215,6 +216,7 @@
     </div>
     <MyDrawer ref="drawer" />
     <EditAvatar ref="editAvatar" />
+    <EditUserForm ref="userForm" />
   </div>
 </template>
 
@@ -224,9 +226,10 @@ import Operation from "./mixins/operation";
 import Property from "./mixins/property";
 import MyDrawer from "./components/drawer";
 import EditAvatar from "./components/edit_avatar";
+import EditUserForm from "./components/edit_user_msg";
 export default {
   mixins: [Initial, Operation, Property],
-  components: { MyDrawer, EditAvatar }
+  components: { MyDrawer, EditAvatar, EditUserForm }
 };
 </script>
 

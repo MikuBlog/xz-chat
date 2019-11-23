@@ -45,12 +45,16 @@ app.use(express.static(__dirname))
 app.get('/api/user/logout', middleware.urlQuery, account.logout)
 // 获取用户列表
 app.get('/api/user/getuserlist', middleware.urlQuery, account.getUserList)
+// 获取用户信息
+app.get('/api/user/getusermsg', middleware.urlQuery, account.getUserMsg)
 // 用户注册
 app.post('/api/user/register', bodyParser.urlencoded({ extended: false }), account.register)
 // 用户登录
 app.post('/api/user/login', bodyParser.urlencoded({ extended: false }), account.login)
 // 上传用户头像
 app.post('/api/user/editavatar', middleware.uploadImage.single('image'), account.editAvatar)
+// 上传用户头像
+app.post('/api/user/editusermsg', bodyParser.urlencoded({ extended: false }), account.editUserMsg)
 
 
 /*聊天记录接口*/

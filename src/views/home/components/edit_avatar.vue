@@ -21,18 +21,9 @@
           @realTime="realTime"
         ></vueCropper>
         <div class="correct-button-box">
-          <el-button 
-          @click="$refs.cropper.changeScale(1)" 
-          size="medium" 
-          icon="el-icon-plus"></el-button>
-          <el-button 
-          @click="$refs.cropper.changeScale(-1)" 
-          size="medium" 
-          icon="el-icon-minus"></el-button>
-          <el-button 
-          @click="$refs.cropper.rotateLeft()" 
-          size="medium" 
-          icon="el-icon-refresh-left"></el-button>
+          <el-button @click="$refs.cropper.changeScale(1)" size="medium" icon="el-icon-plus"></el-button>
+          <el-button @click="$refs.cropper.changeScale(-1)" size="medium" icon="el-icon-minus"></el-button>
+          <el-button @click="$refs.cropper.rotateLeft()" size="medium" icon="el-icon-refresh-left"></el-button>
           <el-button
             @click="$refs.cropper.rotateRight()"
             size="medium"
@@ -53,7 +44,7 @@
 </template>
 
 <script>
-import convertHttp from '@/utils/convertHttp'
+import convertHttp from "@/utils/convertHttp";
 export default {
   data() {
     return {
@@ -84,9 +75,9 @@ export default {
     uploadAvatar() {
       if (this.options.img) {
         this.$refs.cropper.getCropBlob(result => {
-          const formData = new FormData()
-          formData.append('image', result)
-          formData.append('username', this.$getMemorySes('user').username)
+          const formData = new FormData();
+          formData.append("image", result);
+          formData.append("username", this.$parent.user.username);
           this.$.ajax({
             url: `${requestUrl}/api/user/editavatar`,
             type: "post",
@@ -94,11 +85,15 @@ export default {
             contentType: false,
             processData: false
           }).then(result => {
-            this.$successMsg(`${result.msg}`)
-            this.$parent.user.avatar = convertHttp(result.url)
-            this.$parent.socketInRoom.send(JSON.stringify(this.$parent.user))
-            this.dialogVisible = false
-          })
+            if (result.status === "ok") {
+              this.$successMsg(result.msg);
+              this.$parent.user.avatar = convertHttp(result.url);
+              this.$parent.socketInRoom.send(JSON.stringify(this.$parent.user));
+            } else {
+              this.$errorMsg(result.msg);
+            }
+            this.dialogVisible = false;
+          });
         });
       } else {
         this.$warnMsg("请选择图片");
