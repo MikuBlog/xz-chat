@@ -3,7 +3,7 @@ const chatRecordSchema = require('../database/schema/chat_record')
 // 记录数据
 function insertRecord(req, res) {
   const data = req.body
-  if (!data.content || !data.sender || !data.recipient || !data.createtime) {
+  if (!data.content || !data.senderusername || !data.sendername || !data.recipient || !data.createtime) {
     res.send({
       status: "error",
       msg: "参数不正确或缺少参数"
@@ -58,7 +58,7 @@ function insertAllRecord(req, res) {
 // 撤回聊天记录
 function withdrawRecord(req, res) {
   const data = req.urlQuery
-  if (!data.key || !data.sender) {
+  if (!data.key || !data.senderusername) {
     res.send({
       status: "error",
       msg: "参数不正确或缺少参数"
@@ -74,13 +74,13 @@ function withdrawRecord(req, res) {
           res.send({
             status: "error",
             msg: "撤回失败",
-            sender: data.sender
+            senderusername: data.senderusername
           })
         } else {
           res.send({
             status: "ok",
             msg: "撤回成功",
-            sender: data.sender
+            senderusername: data.senderusername
           })
         }
       }

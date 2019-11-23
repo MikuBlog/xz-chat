@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = new mongoose.Schema({
   content: String,
-  sender: String,
+  senderusername: String,
+  sendername: String,
+  avatar: String,
   recipient: String,
   createtime: Date,
   isshow: Boolean,

@@ -1,4 +1,10 @@
+import convertHttp from '@/utils/convertHttp'
 export default {
+  data() {
+    return {
+      convertHttp: convertHttp
+    }
+  },
   created() {
     document.title = "聊天室"
     // 初始化用户信息
@@ -58,7 +64,11 @@ export default {
         this.$router.push('/login')
       }else {
         for (let key in this.$getMemorySes('user')) {
-          this.user[key] = this.$getMemorySes('user')[key]
+          if(key === 'avatar') {
+            this.user[key] = convertHttp(this.$getMemorySes('user')[key])
+          }else {
+            this.user[key] = this.$getMemorySes('user')[key]
+          }
         }
         // 进入房间建立连接
         this.connectWebsocketInRoom()

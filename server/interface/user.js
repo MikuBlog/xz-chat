@@ -11,6 +11,8 @@ function register(req, res) {
     return
   }
   data.isonline = false
+  data.name = data.username
+  data.avatar = "http://myinterface.xuanzai.top/getPicture?type=error"
   data.key = new Date().getTime()
   new Promise((resolve, reject) => {
     accountSchema
@@ -150,9 +152,45 @@ function getUserList(req, res) {
     })
 }
 
+function editUserMsg() {
+
+}
+
+// 上传用户头像
+function editAvatar(req, res) {
+  const data = req.body
+  if(!data.username) {
+    res.send({
+      status: "errror",
+      msg: "参数不正确或缺少参数"
+    })
+    return
+  }
+  accountSchema
+    .updateOne(
+      { username: data.username },
+      { $set: { avatar: `/source/images/${data.filename}` } },
+      err => {
+        if(err) {
+          res.send({
+            status: "error",
+            msg: "修改头像失败"
+          })
+        }else {
+          res.send({
+            status: "ok",
+            msg: "修改头像成功",
+            url: `/source/images/${data.filename}`
+          })
+        }
+      }
+    )
+}
+
 module.exports = {
   login: login,
   register: register,
   logout: logout,
-  getUserList: getUserList
+  getUserList: getUserList,
+  editAvatar: editAvatar
 }

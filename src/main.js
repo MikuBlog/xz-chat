@@ -9,6 +9,8 @@ import {
 } from 'view-design'
 // 引入jquery模块
 import $ from 'jquery'
+// 引入图片剪裁组件
+import VueCropper from 'vue-cropper'
 // 引入全局提示模块
 import Message from '@/api/message/message'
 // 引入时间格式化函数
@@ -190,6 +192,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 // 引入iview抽屉组件
 Vue.component('Drawer', Drawer)
+// 引入图片剪裁组件
+Vue.use(VueCropper)
 
 new Vue({
   router,

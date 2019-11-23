@@ -7,7 +7,7 @@ const express = require('express')
 // 处理请求体数据
 const bodyParser = require('body-parser')
 // 处理url数据
-const urlQuery = require('./middleware/index')
+const middleware = require('./middleware/index')
 // 引入websocket处理模块
 const express_ws = require('express-ws')
 const app = express()
@@ -35,25 +35,30 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+// 配置静态文件路径
+app.use(express.static(__dirname))
+
 
 /*用户接口*/
 
+// 用户登出
+app.get('/api/user/logout', middleware.urlQuery, account.logout)
 // 获取用户列表
-app.get('/api/user/getuserlist', urlQuery.urlQuery, account.getUserList)
+app.get('/api/user/getuserlist', middleware.urlQuery, account.getUserList)
 // 用户注册
 app.post('/api/user/register', bodyParser.urlencoded({ extended: false }), account.register)
 // 用户登录
 app.post('/api/user/login', bodyParser.urlencoded({ extended: false }), account.login)
-// 用户登出
-app.get('/api/user/logout', urlQuery.urlQuery, account.logout)
+// 上传用户头像
+app.post('/api/user/editavatar', middleware.uploadImage.single('image'), account.editAvatar)
 
 
 /*聊天记录接口*/
 
 // 获取聊天记录
-app.get('/api/chat/getrecord', urlQuery.urlQuery, chatRecord.getRecord)
+app.get('/api/chat/getrecord', middleware.urlQuery, chatRecord.getRecord)
 // 撤回聊天记录
-app.get('/api/chat/withdrawrecord', urlQuery.urlQuery, chatRecord.withdrawRecord)
+app.get('/api/chat/withdrawrecord', middleware.urlQuery, chatRecord.withdrawRecord)
 // 记录聊天记录
 app.post('/api/chat/insertrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertRecord)
 // 批量记录聊天记录

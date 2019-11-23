@@ -1,7 +1,14 @@
 export default {
   data() {
     return {
-      user: {},
+      user: {
+        avatar: "",
+        username: "",
+        name: "",
+        email: "",
+        phone: "",
+        age: ""
+      },
       chatObj: {},
       socketInFace: "",
       socketInGroup: "",
@@ -12,6 +19,7 @@ export default {
       size: 10,
       loading: false,
       getRecordLoading: false,
+      withdrawLoading: false,
       isonline: false,
       isGroup: false,
       sendTime: "",

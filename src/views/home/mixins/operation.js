@@ -42,7 +42,9 @@ export default {
         data: {
           content: this.textarea,
           recipient: this.chatObj.username,
-          sender: this.user.username,
+          senderusername: this.user.username,
+          sendername: this.user.name,
+          avatar: this.user.avatar,
           createtime: this.sendTime,
           mapkey: `${Number(this.user.key) + Number(this.chatObj.key)}`,
           key: new Date(this.sendTime).getTime(),
@@ -137,7 +139,9 @@ export default {
         if (this.isGroup) {
           this.socketInGroup.send(JSON.stringify({
             content: this.textarea,
-            sender: this.user.username,
+            senderusername: this.user.username,
+            sendername: this.user.name,
+            avatar: this.user.avatar,
             recipient: 'group',
             type: "group",
             createtime: this.sendTime,
@@ -146,7 +150,9 @@ export default {
         } else {
           this.socketInFace.send(JSON.stringify({
             content: this.textarea,
-            sender: this.user.username,
+            senderusername: this.user.username,
+            sendername: this.user.name,
+            avatar: this.user.avatar,
             recipient: this.chatObj.username,
             type: "face",
             createtime: this.sendTime,
@@ -165,8 +171,9 @@ export default {
     },
     // 撤回信息
     withdrawContent(item) {
+      this.withdrawLoading = true
       this.$.ajax({
-        url: `${requestUrl}/api/chat/withdrawrecord?key=${item.key}&sender=${item.sender}`,
+        url: `${requestUrl}/api/chat/withdrawrecord?key=${item.key}&senderusername=${item.senderusername}`,
         type: "get"
       }).then(result => {
         if (result.status === 'ok') {
@@ -176,7 +183,8 @@ export default {
           this.isGroup
             ? this.socketInGroup.send(obj)
             : this.socketInFace.send(obj)
-          this.widthdrawSender = result.sender
+          this.widthdrawSender = result.senderusername
+          this.withdrawLoading = false
         } else {
           this.$errorMsg(`${result.msg}`)
         }
@@ -187,7 +195,9 @@ export default {
       this.sendTime = this.$formatDate(new Date(), true)
       const obj = {
         content: "撤回了一条消息",
-        sender: this.user.username,
+        senderusername: this.user.username,
+        sendername: this.user.name,
+        avatar: this.user.avatar,
         recipient: this.chatObj.username,
         type: "withdraw",
         createtime: this.sendTime,
@@ -218,11 +228,11 @@ export default {
         this.socketInGroup.onmessage = e => {
           const data = JSON.parse(e.data)
           if (data.type === 'update') {
-              (async () => {
-                await this.getGroupRecordList()
-                this.widthdrawSender === this.user.username && this.sendWithdrawContent()
-                this.widthdrawSender = ""
-              })();
+            (async () => {
+              await this.getGroupRecordList()
+              this.widthdrawSender === this.user.username && this.sendWithdrawContent()
+              this.widthdrawSender = ""
+            })();
           } else {
             this.willSendContentList.push(JSON.parse(e.data))
           }

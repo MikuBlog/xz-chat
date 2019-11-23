@@ -96,6 +96,9 @@ export default {
       }
     };
   },
+  mounted() {
+    this.initialStyle()
+  },
   methods: {
     // 选择背景图
     selectPic() {
@@ -110,10 +113,13 @@ export default {
     useBg() {
       const ele = document.querySelector('.content-list')
       this.$setStyle(ele, 'background-image', `url(${this.backgroundUrl})`)
-      this.$setStyle(ele, 'background-position', 'center')
-      this.$setStyle(ele, 'background-repeat', 'no-repeat')
-      this.$setStyle(ele, 'background-size', 'cover')
+      this.$setMemoryPmt("chatBackground", this.backgroundUrl)
     },
+    initialStyle() {
+      const ele = document.querySelector('.content-list')
+      this.$getMemoryPmt("chatBackground")
+      && this.$setStyle(ele, 'background-image', `url(${this.$getMemoryPmt("chatBackground")})`)
+    }
   }
 };
 </script>

@@ -563,6 +563,8 @@ export default {
             success(data) {
               if(data.status === 'ok') {
                 _this.$successMsg("注册成功，请登录")
+              }else {
+                _this.$errorMsg(`${data.msg}`)
               }
             },error() {
               _this.$errorMsg("服务器出错")
