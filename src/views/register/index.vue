@@ -22,6 +22,7 @@
                 v-model="ruleForm.username"
                 prefix-icon="el-icon-user-solid"
                 placeholder="请输入用户名"
+                maxlength="10"
               ></el-input>
             </el-form-item>
             <!-- <el-form-item prop="name" class="form-item">
@@ -563,6 +564,7 @@ export default {
             success(data) {
               if(data.status === 'ok') {
                 _this.$successMsg("注册成功，请登录")
+                _this.$router.push({ path: '/login' })
               }else {
                 _this.$errorMsg(`${data.msg}`)
               }

@@ -99,7 +99,9 @@ export default {
       viewScroll.addEventListener('scroll', e => {
         if (viewScroll.scrollTop == 0) {
           this.page++
-          this.continueToGetRecordList()
+          this.isGroup 
+          ? this.continueToGetGroupRecordList()
+          : this.continueToGetRecordList()
         }
       })
       window.onbeforeunload = () => {

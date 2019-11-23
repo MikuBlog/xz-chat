@@ -108,6 +108,20 @@ export default {
         })
       })
     },
+    continueToGetGroupRecordList() {
+      this.getRecordLoading = true
+      this.$.ajax({
+        url: `${requestUrl}/api/chat/getrecord?page=${this.page}&size=${this.size}&recipient=${this.chatObj.username}&type=group`,
+        type: "get"
+      }).then(result => {
+        this.insertRecordList(result.list)
+        this.getRecordLoading = false
+        this.$nextTick(() => {
+          const viewScroll = document.querySelectorAll('.el-scrollbar__wrap')[1]
+          viewScroll.scrollTop = viewScroll.scrollTop + 20
+        })
+      })
+    },
     // 获取聊天记录
     getRecordList() {
       this.page = 1

@@ -10,6 +10,13 @@ function register(req, res) {
     })
     return
   }
+  if(data.username.length > 10) {
+    res.send({
+      status: "error",
+      msg: "用户名称长度不能超过10个字符"
+    })
+    return
+  }
   data.isonline = false
   data.name = data.username
   data.avatar = "http://myinterface.xuanzai.top/getPicture?type=error"

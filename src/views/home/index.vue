@@ -37,7 +37,7 @@
         </div>
         <el-divider></el-divider>
         <div class="customer-list">
-          <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
+          <el-scrollbar :style="{ height: `calc(100% - 90px)` }" class="menu-horizontal-scrollbar">
             <div class="list" @click="connectWebsocketInGroup(1)">
               <div class="avatar">
                 <img src="../../assets/avatar/group.jpg" alt="group.jpg" />
@@ -59,7 +59,6 @@
                   <img :src="convertHttp(items.avatar)" alt="user.jpg" />
                 </div>
               </el-popover>
-              <!-- <el-avatar :size="50" src="../../assets/avatar/user.jpg" fit="cover" class="avatar"></el-avatar> -->
               <span class="name" style="color: #fefefe">
                 {{ items.name }}
                 <span style="color: #666; font-size: .9rem">（在线）</span>
@@ -107,7 +106,7 @@
               <div class="avatar" v-if="items.type !== 'withdraw'">
                 <img :src="items.avatar" alt="user.jpg" />
               </div>
-              <el-card shadow="always" class="card" v-if="items.type !== 'withdraw'">
+              <el-card shadow="always" class="card chat-card" v-if="items.type !== 'withdraw'">
                 <el-popover
                   placement="bottom"
                   width="150"
@@ -159,7 +158,7 @@
               <div class="avatar" v-if="items.type !== 'withdraw'">
                 <img :src="items.avatar" alt="user.jpg" />
               </div>
-              <el-card shadow="always" class="card" v-if="items.type !== 'withdraw'">
+              <el-card shadow="always" class="card chat-card" v-if="items.type !== 'withdraw'">
                 <el-popover
                   placement="bottom"
                   width="150"
