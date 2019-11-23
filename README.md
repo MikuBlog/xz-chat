@@ -11,6 +11,7 @@
 :heavy_check_mark: 用户实时更换头像
 :heavy_check_mark: 聊天数据实时保存
 :heavy_check_mark: 聊天数据撤回
+:x: 富文本编辑器（待完成）
 :x: 后台管理系统（待完成）
 
 ## 语言
