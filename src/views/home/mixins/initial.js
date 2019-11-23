@@ -112,20 +112,19 @@ export default {
     },
     // 初始化用户信息
     initialProfile(data) {
-      if (!this.$getMemorySes('user')) {
-        this.$router.push('/login')
-      } else {
-        for (let key in data) {
-          if (key === 'avatar') {
-            this.user[key] = convertHttp(data[key])
-          } else {
-            this.user[key] = data[key]
-          }
+      for (let key in data) {
+        if (key === 'avatar') {
+          this.user[key] = convertHttp(data[key])
+        } else {
+          this.user[key] = data[key]
         }
       }
     },
     // 获取用户信息
     getUserMsg() {
+      if (!this.$getMemorySes('user')) {
+        this.$router.push({ path: '/login' })
+      }
       this.$.ajax({
         url: `${requestUrl}/api/user/getusermsg?username=${this.$getMemorySes('user').username}`,
         type: "get"

@@ -427,7 +427,7 @@ export default {
           }).then(result => {
             if(result.status === 'ok') {
                 this.$successMsg("登录成功")
-                this.$router.push('/home')
+                this.$router.push({ path: '/home' })
                 this.$setMemorySes("user", result.data)
               }else {
                 this.$errorMsg(`${result.msg}`)
