@@ -12,7 +12,14 @@
               <div class="detail">电话：{{ user.phone }}</div>
               <div class="detail">邮箱：{{ user.email }}</div>
             </div>
-            <el-button type="primary" size="small" circle icon="el-icon-edit" style="float: right" @click="showEditUserBox"></el-button>
+            <el-button
+              type="primary"
+              size="small"
+              circle
+              icon="el-icon-edit"
+              style="float: right"
+              @click="showEditUserBox"
+            ></el-button>
             <div class="avatar" @click="$refs.editAvatar.dialogVisible = true" slot="reference">
               <img :src="user.avatar" alt="user.jpg" />
             </div>
@@ -84,6 +91,8 @@
       <div class="right-list" v-loading="getRecordLoading">
         <div class="header-profile">{{ chatObj.name }}</div>
         <div class="content-list">
+          <div class="background-opacity" ref="opacity"></div>
+          <div class="background-mask" ref="mask"></div>
           <el-scrollbar style="height:100%; width: 100%;" class="menu-horizontal-scrollbar">
             <div
               class="list"
@@ -107,26 +116,26 @@
                   style="padding: 0"
                 >
                   <div align="center">
-                    <el-button type="text" @click="withdrawContent(items)" :loading="withdrawLoading">撤回信息</el-button>
+                    <el-button
+                      type="text"
+                      @click="withdrawContent(items)"
+                      :loading="withdrawLoading"
+                    >撤回信息</el-button>
                   </div>
                   <div slot="reference">
                     <div class="date-time">
-                      <span
-                        style="margin-right: 1rem"
-                      >{{ items.sendername }}</span>
+                      <span style="margin-right: 1rem">{{ items.sendername }}</span>
                       {{ $formatDate(items.createtime, true) }}
                     </div>
-                    <div>{{items.content}}</div>
+                    <div v-html="items.content"></div>
                   </div>
                 </el-popover>
                 <div v-else>
                   <div class="date-time">
-                    <span
-                      style="margin-right: 1rem"
-                    >{{ items.sendername }}</span>
+                    <span style="margin-right: 1rem">{{ items.sendername }}</span>
                     {{ $formatDate(items.createtime, true) }}
                   </div>
-                  <div>{{items.content}}</div>
+                  <div v-html="items.content"></div>
                 </div>
               </el-card>
               <div class="withdraw-box" v-else>
@@ -159,26 +168,26 @@
                   style="padding: 0"
                 >
                   <div align="center">
-                    <el-button type="text" @click="withdrawContent(items)" :loading="withdrawLoading">撤回信息</el-button>
+                    <el-button
+                      type="text"
+                      @click="withdrawContent(items)"
+                      :loading="withdrawLoading"
+                    >撤回信息</el-button>
                   </div>
                   <div slot="reference">
                     <div class="date-time">
-                      <span
-                        style="margin-right: 1rem"
-                      >{{ items.sendername }}</span>
+                      <span style="margin-right: 1rem">{{ items.sendername }}</span>
                       {{ $formatDate(items.createtime, true) }}
                     </div>
-                    <div>{{items.content}}</div>
+                    <div v-html="items.content"></div>
                   </div>
                 </el-popover>
                 <div v-else>
                   <div class="date-time">
-                    <span
-                      style="margin-right: 1rem"
-                    >{{ items.sendername }}</span>
+                    <span style="margin-right: 1rem">{{ items.sendername }}</span>
                     {{ $formatDate(items.createtime, true) }}
                   </div>
-                  <div>{{items.content}}</div>
+                  <div v-html="items.content"></div>
                 </div>
               </el-card>
               <div class="withdraw-box" v-else>
@@ -192,24 +201,19 @@
           </el-scrollbar>
         </div>
         <div class="input-box">
-          <div class="submit" align="right">
-            <el-button
-              type="success"
-              size="small"
-              style="margin-right: .5rem"
-              @click="sendContent"
-              :loading="loading"
-            >发送</el-button>
-          </div>
           <div class="input-area">
-            <el-input
-              class="textarea"
-              type="textarea"
-              :rows="8"
-              placeholder="输入聊天内容"
-              v-model="textarea"
-              @keypress.native="sendContentQuick"
-            ></el-input>
+            <div class="editor">
+              <div id="div1" class="toolbar">
+                <el-button
+                  type="success"
+                  size="small"
+                  style="position: absolute;right: 0; padding: 5px 7px; margin-right: 5px"
+                  @click="sendContent"
+                  :loading="loading"
+                >发送</el-button>
+              </div>
+              <div id="div2" class="text"></div>
+            </div>
           </div>
         </div>
       </div>

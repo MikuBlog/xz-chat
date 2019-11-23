@@ -1,7 +1,9 @@
 import convertHttp from '@/utils/convertHttp'
+import E from "wangeditor";
 export default {
   data() {
     return {
+      editor: "",
       convertHttp: convertHttp
     }
   },
@@ -11,10 +13,55 @@ export default {
     this.getUserMsg()
   },
   mounted() {
+    // 初始化富文本编辑器
+    this.initialEditor()
     // 初始化滚动监听
     this.initialListener()
   },
   methods: {
+    // 初始化富文本编辑器
+    initialEditor() {
+      const
+        editor = new E("#div1", "#div2"),
+        _this = this;
+      editor.customConfig.zIndex = 0;
+      this.editor = editor;
+      editor.customConfig.menus = [
+        "emoticon",
+        "fontSize", // 字号
+        "fontName", // 字体
+        "foreColor", // 文字颜色
+        "justify", // 对齐方式
+        'image'  // 插入图片
+      ];
+      editor.customConfig.uploadImgServer = `${this.url}/salesman/fixOrder/uploadImage`;
+      editor.customConfig.uploadImgShowBase64 = true
+      editor.customConfig.uploadImgMaxLength = 1;
+      editor.customConfig.uploadFileName = "file";
+      editor.customConfig.customAlert = "";
+      editor.customConfig.uploadImgMaxSize = 20 * 1024 * 1024
+      editor.customConfig.uploadImgHeaders = {
+        "content-type": "application/form-data"
+      };
+      editor.customConfig.customUploadImg = function (files, insert) {
+        const formData = new FormData();
+        formData.append("image", files[0]);
+        _this.$.ajax({
+          url: `${requestUrl}/api/image/uploadimage`,
+          type: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success(data) {
+            insert(`${requestUrl}${data.url}`);
+          },
+          error() {
+            console.log("服务器出错");
+          }
+        });
+      };
+      editor.create();
+    },
     // 初始化用户列表
     initialUserList(onlineUserList, outlineUserList) {
       this.onlineUserList = onlineUserList
@@ -46,7 +93,9 @@ export default {
     },
     // 初始化监听器
     initialListener() {
-      const viewScroll = document.querySelectorAll('.el-scrollbar__wrap')[1]
+      const 
+        viewScroll = document.querySelectorAll('.el-scrollbar__wrap')[1],
+        w_e_text = document.querySelector('.w-e-text')
       viewScroll.addEventListener('scroll', e => {
         if (viewScroll.scrollTop == 0) {
           this.page++
@@ -57,16 +106,19 @@ export default {
         this.logout()
         return "确认是否离开室";
       };
+      w_e_text.addEventListener('keypress', (e) => {
+        this.sendContentQuick(e.keyCode)
+      })
     },
     // 初始化用户信息
     initialProfile(data) {
-      if(!this.$getMemorySes('user')) {
+      if (!this.$getMemorySes('user')) {
         this.$router.push('/login')
-      }else {
+      } else {
         for (let key in data) {
-          if(key === 'avatar') {
+          if (key === 'avatar') {
             this.user[key] = convertHttp(data[key])
-          }else {
+          } else {
             this.user[key] = data[key]
           }
         }
@@ -78,11 +130,11 @@ export default {
         url: `${requestUrl}/api/user/getusermsg?username=${this.$getMemorySes('user').username}`,
         type: "get"
       }).then(result => {
-        if(result.status === 'ok') {
+        if (result.status === 'ok') {
           this.initialProfile(result.data)
           // 进入房间建立连接
           this.connectWebsocketInRoom()
-        }else {
+        } else {
           this.$errorMsg(result.msg)
         }
       })

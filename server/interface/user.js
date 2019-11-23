@@ -245,7 +245,7 @@ function editAvatar(req, res) {
   accountSchema
     .updateOne(
       { username: data.username },
-      { $set: { avatar: `/source/images/${data.filename}` } },
+      { $set: { avatar: data.url } },
       err => {
         if (err) {
           res.send({
@@ -256,7 +256,7 @@ function editAvatar(req, res) {
           res.send({
             status: "ok",
             msg: "修改头像成功",
-            url: `/source/images/${data.filename}`
+            url: data.url
           })
         }
       }

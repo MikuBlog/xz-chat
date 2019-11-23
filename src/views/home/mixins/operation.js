@@ -46,7 +46,7 @@ export default {
         url: `${requestUrl}/api/chat/insertrecord`,
         type: 'post',
         data: {
-          content: this.textarea,
+          content: this.editor.txt.html(),
           recipient: this.chatObj.username,
           senderusername: this.user.username,
           sendername: this.user.name,
@@ -140,11 +140,11 @@ export default {
     },
     // 向服务器发送推送
     sendContent() {
-      if (this.textarea && this.chatObj.username) {
+      if (this.editor.txt.html() && this.chatObj.username) {
         this.sendTime = this.$formatDate(new Date(), true)
         if (this.isGroup) {
           this.socketInGroup.send(JSON.stringify({
-            content: this.textarea,
+            content: this.editor.txt.html(),
             senderusername: this.user.username,
             sendername: this.user.name,
             avatar: this.user.avatar,
@@ -155,7 +155,7 @@ export default {
           }))
         } else {
           this.socketInFace.send(JSON.stringify({
-            content: this.textarea,
+            content: this.editor.txt.html(),
             senderusername: this.user.username,
             sendername: this.user.name,
             avatar: this.user.avatar,
@@ -167,11 +167,11 @@ export default {
         }
         this.sendRecord(this.isGroup ? 'group' : 'face')
         this.loading = true
-        this.textarea = ""
+        this.editor.txt.html("")
       }
     },
-    sendContentQuick(e) {
-      if (e.keyCode === 10) {
+    sendContentQuick(code) {
+      if (code === 10) {
         this.sendContent()
       }
     },

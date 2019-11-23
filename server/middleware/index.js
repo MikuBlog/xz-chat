@@ -3,17 +3,30 @@ const url = require('url')
 //引入文件解析模块
 var multer = require('multer')
 //配置图片中间件
-const RamImage = multer.diskStorage({
+const RamImage_1 = multer.diskStorage({
   destination: function (req, file, callback) {
     //第二个参数设置路径，下面的路径为server.js所在目录的相对路径
-    callback(null, __dirname + '/../source/images')
+    callback(null, __dirname + '/../source/images/avatar')
   },
   filename: function (req, file, callback) {
     //第二个参数设置文件名，下面的文件名为上传时的文件名
-    req.body.filename = `${new Date().getTime()}.jpg`
-    callback(null, req.body.filename)
+    req.body.url = `/source/images/avatar/${new Date().getTime()}.jpg`
+    callback(null, `${new Date().getTime()}.jpg`)
   }
 })
+
+const RamImage_2 = multer.diskStorage({
+  destination: function (req, file, callback) {
+    //第二个参数设置路径，下面的路径为server.js所在目录的相对路径
+    callback(null, __dirname + '/../source/images/chat')
+  },
+  filename: function (req, file, callback) {
+    //第二个参数设置文件名，下面的文件名为上传时的文件名
+    req.body.url = `/source/images/chat/${new Date().getTime()}.jpg`
+    callback(null, `${new Date().getTime()}.jpg`)
+  }
+})
+
 /**
  * @author xuanzai
  * @description 获取url后的参数
@@ -36,5 +49,6 @@ function urlQuery(req, res, next) {
 
 module.exports = {
   urlQuery: urlQuery,
-  uploadImage: multer({ storage: RamImage })
+  editAvatar: multer({ storage: RamImage_1 }),
+  uploadImage: multer({ storage: RamImage_2 })
 }

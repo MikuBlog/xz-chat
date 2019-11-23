@@ -20,6 +20,8 @@ express_ws(app)
 const account = require('./interface/user')
 // 聊天接口
 const chatRecord = require('./interface/chat_record')
+// 上传图片接口
+const image = require('./interface/image')
 
 /*导入websocket模块*/
 const inFace = require('./socket/socketInFace')
@@ -52,7 +54,7 @@ app.post('/api/user/register', bodyParser.urlencoded({ extended: false }), accou
 // 用户登录
 app.post('/api/user/login', bodyParser.urlencoded({ extended: false }), account.login)
 // 上传用户头像
-app.post('/api/user/editavatar', middleware.uploadImage.single('image'), account.editAvatar)
+app.post('/api/user/editavatar', middleware.editAvatar.single('image'), account.editAvatar)
 // 上传用户头像
 app.post('/api/user/editusermsg', bodyParser.urlencoded({ extended: false }), account.editUserMsg)
 
@@ -65,8 +67,12 @@ app.get('/api/chat/getrecord', middleware.urlQuery, chatRecord.getRecord)
 app.get('/api/chat/withdrawrecord', middleware.urlQuery, chatRecord.withdrawRecord)
 // 记录聊天记录
 app.post('/api/chat/insertrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertRecord)
-// 批量记录聊天记录
+// 批量记录聊天记录 
 app.post('/api/chat/insertallrecord', bodyParser.urlencoded({ extended: false }), chatRecord.insertAllRecord)
+
+
+/*上传图片接口*/
+app.post('/api/image/uploadimage', middleware.uploadImage.single('image'), image.uploadImage)
 
 // 一对一传输
 app.ws('/inface/:uid', inFace.server)
