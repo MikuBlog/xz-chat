@@ -154,7 +154,7 @@ export default {
     },
     // 向服务器发送推送
     sendContent() {
-      if (this.editor.txt.html() && this.chatObj.username) {
+      if (this.editor.txt.html() && this.chatObj.name) {
         this.sendTime = this.$formatDate(new Date(), true)
         if (this.isGroup) {
           this.socketInGroup.send(JSON.stringify({
