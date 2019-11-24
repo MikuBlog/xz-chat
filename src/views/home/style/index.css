@@ -48,12 +48,12 @@
 }
 
 .chat-box {
-  position: relative;
-  width: 70%;
-  height: 700px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
   background: #fefefe;
   border-radius: 10px;
 }
@@ -236,7 +236,7 @@
 }
 
 .right-list .content-list .list .chat-card {
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .right-list .content-list .menu-horizontal-scrollbar ::v-deep .el-scrollbar__wrap {
@@ -291,29 +291,25 @@
 @media screen and (max-width: 2560px) {
   .chat-box {
     position: relative;
-    width: 950px;
-    height: 900px;
+    width: 1000px;
   }
 }
 
 @media screen and (max-width: 1920px) {
   .chat-box {
-    width: 850px;
-    height: 750px;
+    width: 900px;
   }
 }
 
 @media screen and (max-width: 1440px) {
   .chat-box {
     width: 800px;
-    height: 750px;
   }
 }
 
 @media screen and (max-width: 1080px) {
   .chat-box {
     width: 750px;
-    height: 700px;
   }
   .left-list {
     width: 230px;
@@ -323,5 +319,35 @@
   }
   .right-list {
     margin-left: 230px;
+  }
+}
+
+@media screen and (min-height: 1100px) {
+  .chat-box {
+    height: 1000px;
+  }
+}
+
+@media screen and (max-height: 1100px) {
+  .chat-box {
+    height: 1000px;
+  }
+}
+
+@media screen and (max-height: 900px) {
+  .chat-box {
+    height: 850px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .chat-box {
+    height: 750px;
+  }
+}
+
+@media screen and (max-height: 750px) {
+  .chat-box {
+    height: 700px;
   }
 }

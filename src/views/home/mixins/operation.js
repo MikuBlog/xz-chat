@@ -237,7 +237,7 @@ export default {
     connectWebsocketInGroup(uid) {
       this.isGroup = true
       this.chatObj = {
-        username: '群聊'
+        name: '群聊'
       }
       this.disConnect()
       if (window.WebSocket) {

@@ -32,6 +32,7 @@ export default {
         "fontName", // 字体
         "foreColor", // 文字颜色
         "justify", // 对齐方式
+        'video',
         'image'  // 插入图片
       ];
       editor.customConfig.uploadImgServer = `${this.url}/salesman/fixOrder/uploadImage`;
