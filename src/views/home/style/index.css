@@ -290,7 +290,6 @@
 
 @media screen and (max-width: 2560px) {
   .chat-box {
-    position: relative;
     width: 1000px;
   }
 }

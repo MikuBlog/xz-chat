@@ -49,10 +49,10 @@ export default {
           content: this.editor.txt.html(),
           recipient: this.chatObj.username,
           senderusername: this.user.username,
-          sendername: this.user.name,
+          sendername: this.user.name, 
           avatar: this.user.avatar,
           createtime: this.sendTime,
-          mapkey: `${Number(this.user.key) + Number(this.chatObj.key)}`,
+          mapkey: this.isGroup ? "" : `${Number(this.user.key) + Number(this.chatObj.key)}`,
           key: new Date(this.sendTime).getTime(),
           type: type,
         }
@@ -237,7 +237,8 @@ export default {
     connectWebsocketInGroup(uid) {
       this.isGroup = true
       this.chatObj = {
-        name: '群聊'
+        name: '群聊',
+        username: '群聊'
       }
       this.disConnect()
       if (window.WebSocket) {
