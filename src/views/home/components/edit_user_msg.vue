@@ -20,7 +20,7 @@
       <el-form-item label="邮箱" prop="email">
         <el-input placeholder="请输入邮箱" v-model="ruleForm.email"></el-input>
       </el-form-item>
-      <el-form-item label="原密码" prop="password">
+      <el-form-item label="新密码" prop="password">
         <el-input type="password" placeholder="请输入新密码" v-model="ruleForm.password"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">

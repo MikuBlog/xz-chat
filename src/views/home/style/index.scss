@@ -319,3 +319,9 @@
     height: 700px;
   }
 }
+
+@media screen and (max-height: 750px) {
+  .chat-box {
+    height: 650px;
+  }
+}

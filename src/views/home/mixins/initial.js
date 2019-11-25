@@ -83,7 +83,6 @@ export default {
         } 
         this.socketInRoom.onmessage = e => {
           const data = JSON.parse(e.data)
-          console.log(data)
           if(data.type === 'isheartbeat') {
             this.user.type = 'isheartbeat'
             this.socketInRoom.send(JSON.stringify(this.user))
@@ -97,10 +96,10 @@ export default {
           }
         }
         this.socketInRoom.onerror = e => {
-          console.log("出错了")
+          this.$errorMsg("连接聊天系统失败")
         }
         this.socketInRoom.onclose = e => {
-          console.log("退出聊天室大厅")
+          this.$successMsg("退出聊天系统")
         }
       } else {
         this.$warnMsg("浏览器版本过低，请切换到高版本浏览器")

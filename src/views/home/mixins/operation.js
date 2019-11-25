@@ -11,6 +11,8 @@ export default {
       userForm.age = user.age
       userForm.phone = user.phone
       userForm.email = user.email
+      userForm.password = user.password
+      userForm.checkPass = user.password
       this.$refs.userForm.dialog = true
     },
     // 登出
