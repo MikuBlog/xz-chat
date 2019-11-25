@@ -17,7 +17,6 @@ function register(req, res) {
     })
     return
   }
-  data.isonline = false
   data.name = data.username
   data.avatar = "http://myinterface.xuanzai.top/getPicture?type=error"
   data.key = new Date().getTime()
@@ -73,7 +72,7 @@ function login(req, res) {
   new Promise((resolve, reject) => {
     accountSchema
       .find(
-        { username: data.username, password: data.password, isonline: false },
+        { username: data.username, password: data.password },
         (err, result) => {
           if (err) {
             reject("服务器出错")

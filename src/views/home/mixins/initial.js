@@ -70,17 +70,31 @@ export default {
     },
     // 进入房间建立websocket
     connectWebsocketInRoom() {
-      this.socketInRoom && this.socketInRoom.close()
+      this.socketInRoom && (
+        this.socketInRoom.close(),
+        this.socketInRoom = ""
+      )
       if (window.WebSocket) {
         this.socketInRoom = new WebSocket(websocketInRoomUrl)
         this.socketInRoom.onopen = e => {
           this.isonline = true
           this.user.type = "online"
           this.socketInRoom.send(JSON.stringify(this.user))
-        }
+        } 
         this.socketInRoom.onmessage = e => {
           const data = JSON.parse(e.data)
-          this.initialUserList(data.onlineUserList, data.outlineUserList)
+          console.log(data)
+          if(data.type === 'isheartbeat') {
+            this.user.type = 'isheartbeat'
+            this.socketInRoom.send(JSON.stringify(this.user))
+          }
+          if(data.type === 'getlist') {
+            this.initialUserList(data.onlineUserList, data.outlineUserList)
+          }
+          if(data.type === 'isonline') {
+            this.$router.push({ path: '/login' })
+            this.$warnMsg("账号重复登录，已被踢出")
+          }
         }
         this.socketInRoom.onerror = e => {
           console.log("出错了")
@@ -107,7 +121,6 @@ export default {
       })
       window.onbeforeunload = () => {
         this.logout()
-        return "确认是否离开室";
       };
       w_e_text.addEventListener('keypress', (e) => {
         this.sendContentQuick(e.keyCode)

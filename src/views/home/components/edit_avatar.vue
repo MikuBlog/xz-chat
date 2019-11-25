@@ -86,6 +86,7 @@ export default {
             processData: false
           }).then(result => {
             if (result.status === "ok") {
+              this.$parent.user.type = 'update'
               this.$successMsg(result.msg);
               this.$parent.user.avatar = convertHttp(result.url);
               this.$parent.socketInRoom.send(JSON.stringify(this.$parent.user));

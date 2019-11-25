@@ -117,7 +117,7 @@ export default {
               this.$parent.initialProfile(result.data);
               this.$parent.socketInRoom.send(
                 JSON.stringify({
-                  type: "online",
+                  type: "update",
                   ...result.data
                 })
               );
