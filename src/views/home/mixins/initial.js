@@ -44,6 +44,7 @@ export default {
       editor.customConfig.uploadImgHeaders = {
         "content-type": "application/form-data"
       };
+      editor.customConfig.emotions = [this.emoji, this.animal, this.food, this.activity, this.place]
       editor.customConfig.customUploadImg = function (files, insert) {
         const formData = new FormData();
         formData.append("image", files[0]);

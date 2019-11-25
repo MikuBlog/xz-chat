@@ -8,7 +8,7 @@
       class="demo-ruleForm"
       style="padding: 20px;"
     >
-      <el-form-item label="昵称" prop="name">
+      <el-form-item label="聊天昵称" prop="name">
         <el-input placeholder="请输入聊天昵称" v-model="ruleForm.name" maxlength="10"></el-input>
       </el-form-item>
       <el-form-item label="年龄" prop="age">

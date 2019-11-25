@@ -29,10 +29,14 @@
               我
               <span style="color: #fefefe;">（{{ isonline ? '在线' : '离线' }}）</span>
             </div>
-            <span
+            <div
               class="name"
-              style="font-size: .8rem; color: #aaa; top: .2rem"
-            >聊天名称：{{ user.name }}</span>
+              style="font-size: .9rem; color: #aaa; margin-top: .2rem;"
+            >账号：{{ user.username }}</div>
+            <div
+              class="name"
+              style="font-size: .8rem; color: #aaa; margin-top: .2rem"
+            >聊天名称：{{ user.name }}</div>
           </div>
         </div>
         <el-divider></el-divider>
@@ -224,6 +228,7 @@
 </template>
 
 <script>
+import Data from "./mixins/data";
 import Initial from "./mixins/initial";
 import Operation from "./mixins/operation";
 import Property from "./mixins/property";
@@ -231,7 +236,7 @@ import MyDrawer from "./components/drawer";
 import EditAvatar from "./components/edit_avatar";
 import EditUserForm from "./components/edit_user_msg";
 export default {
-  mixins: [Initial, Operation, Property],
+  mixins: [ Data, Initial, Operation, Property ],
   components: { MyDrawer, EditAvatar, EditUserForm }
 };
 </script>
