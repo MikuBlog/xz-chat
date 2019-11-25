@@ -2,19 +2,24 @@
 
 第一版多人聊天系统，其中包含一个群聊室提供群聊功能，以及多个用户相互私聊功能。
 
-## 功能
+## 用户功能
 
 :heavy_check_mark: 多人在线群聊
 :heavy_check_mark: 多人在线私聊
 :heavy_check_mark: 检测在线状态
 :heavy_check_mark: 用户实时修改信息
 :heavy_check_mark: 用户实时更换头像
-:heavy_check_mark: 聊天数据实时保存
 :heavy_check_mark: 聊天数据撤回
 :heavy_check_mark: 富文本编辑器
 :heavy_check_mark: 更改聊天背景
 :heavy_check_mark: 聊天背景亮、暗蒙层
-:x: 后台管理系统（待完成）
+
+## 系统功能
+
+:heavy_check_mark: 用户在线/离线检测
+:heavy_check_mark: 用户意外退出检测
+:heavy_check_mark: 单账号同时在线检测
+:heavy_check_mark: 聊天数据实时保存
 
 ## 语言
 
