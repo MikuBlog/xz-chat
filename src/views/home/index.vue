@@ -8,6 +8,7 @@
         <div class="header">
           <el-popover placement="left" :title="user.name" width="200" trigger="hover">
             <div class="customer-profix">
+              <div class="detail">账号：{{ user.username }}</div>
               <div class="detail">年龄：{{ user.age }}</div>
               <div class="detail">电话：{{ user.phone }}</div>
               <div class="detail">邮箱：{{ user.email }}</div>
