@@ -73,6 +73,7 @@
             <div
               class="list"
               v-for="items in outlineUserList"
+              :key="items._id"
               @click="connectWebsocketInFace(items)"
             >
               <el-popover placement="left" :title="items.name" width="200" trigger="hover">
@@ -103,7 +104,6 @@
             <div
               class="list"
               v-for="items in ExistingContentList"
-              :key="items._id"
               :style="{
               textAlign: items.senderusername !== user.username ? 'left' : 'right',
               display: 'flex',

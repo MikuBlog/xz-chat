@@ -6,13 +6,6 @@ let onlineUserList = []
 
 function server(ws, req) {
   contectors.push(ws)
-  let time_1 = new Date().getTime()
-  // 给新的websocket加上心跳检测
-  ws.heartClock = setInterval(() => {
-    ws.send(JSON.stringify({
-      type: "isheartbeat"
-    }))
-  }, 10000)
   ws.onmessage = msg => {
     const data = JSON.parse(msg.data)
     ws.user = data
@@ -20,12 +13,8 @@ function server(ws, req) {
   }
   ws.on('close', () => {
     // websocket关闭，心跳检测关闭
-    clearInterval(ws.heartClock)
-    // 意外退出(强行把用户踢下线)
-    if (ws.user.type !== 'outline') {
-      tickUser(ws.user, 'tick')
-      getUserList()
-    }
+    tickUser(ws.user, 'tick')
+    getUserList()
     contectors = contectors.filter(conn => {
       return (conn === ws) ? false : true;
     });
@@ -34,13 +23,9 @@ function server(ws, req) {
   function justify(data) {
     // 心跳检测
     if (data.type === 'isheartbeat' && data.username) {
-      let time_2 = new Date().getTime()
-      if (time_2 - time_1 > 20000) {
-        clearInterval(ws.heartClock)
-        ws.close()
-      } else {
-        time_1 = new Date().getTime()
-      }
+      ws.send(JSON.stringify({
+        type: "isheartbeat"
+      }))
     }
     // 用户登录 
     else if (data.type === 'online' && data.username) {
@@ -51,11 +36,6 @@ function server(ws, req) {
     }
     // 修改用户信息，触发更新用户列表 
     else if (data.type === 'update') {
-      getUserList()
-    }
-    // 如果接收到用户的主动退出信息，将其状态改为离线
-    else if (data.type === 'outline' && data.username) {
-      tickUser(data, 'tick')
       getUserList()
     }
   }

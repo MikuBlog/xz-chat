@@ -1,5 +1,6 @@
 import convertHttp from '@/utils/convertHttp'
 import E from "wangeditor";
+import { clearInterval } from 'timers';
 export default {
   data() {
     return {
@@ -69,6 +70,21 @@ export default {
       this.onlineUserList = onlineUserList
       this.outlineUserList = outlineUserList
     },
+    //启动心跳检测
+    heartBeat() {
+      this.timer_1 = setInterval(() => {
+        this.user.type = "isheartbeat"
+        this.socketInRoom.send(JSON.stringify(this.user))
+      }, 10000)
+    },
+    // 检测心跳是否正常
+    checkHeartBeat() {
+      this.timer_2 && clearTimeout(this.timer_2)
+      this.timer_2 = setTimeout(() => {
+        this.$warnMsg("连接超时")
+        this.socketInRoom.close()
+      }, 20000)
+    },
     // 进入房间建立websocket
     connectWebsocketInRoom() {
       this.socketInRoom && (
@@ -81,12 +97,12 @@ export default {
           this.isonline = true
           this.user.type = "online"
           this.socketInRoom.send(JSON.stringify(this.user))
+          this.heartBeat()
         }
         this.socketInRoom.onmessage = e => {
           const data = JSON.parse(e.data)
           if (data.type === 'isheartbeat') {
-            this.user.type = 'isheartbeat'
-            this.socketInRoom.send(JSON.stringify(this.user))
+            this.checkHeartBeat()
           }
           if (data.type === 'getlist') {
             this.initialUserList(data.onlineUserList, data.outlineUserList)
@@ -100,7 +116,7 @@ export default {
           this.$errorMsg("连接聊天系统失败")
         }
         this.socketInRoom.onclose = e => {
-          this.$successMsg("退出聊天系统")
+          this.disConnect()
         }
       } else {
         this.$warnMsg("浏览器版本过低，请切换到高版本浏览器")
@@ -120,7 +136,7 @@ export default {
         }
       })
       window.onbeforeunload = () => {
-        this.logout()
+        this.socketInRoom.close()
       };
       w_e_text.addEventListener('keypress', (e) => {
         this.sendContentQuick(e.keyCode)

@@ -1,10 +1,10 @@
 export default {
   beforeDestroy() {
-    this.logout()
+    this.socketInRoom.close()
   },
   methods: {
     showEditUserBox() {
-      const 
+      const
         userForm = this.$refs.userForm.ruleForm,
         user = this.user
       userForm.name = user.name
@@ -15,24 +15,7 @@ export default {
       userForm.checkPass = user.password
       this.$refs.userForm.dialog = true
     },
-    // 登出
-    logout() {
-      this.$.ajax({
-        url: `${requestUrl}/api/user/logout?username=${this.user.username}`,
-        type: "get"
-      })
-      this.socketInRoom.send(JSON.stringify({
-        username: this.user.username,
-        type: 'outline'
-      }))
-      try {
-        this.$setMemorySes('user', "")
-        this.socketInRoom.close()
-        this.disConnect()
-      } catch (e) { }
-    },
-    // 断开websocket连接
-    disConnect() {
+    disConnectGroupAndFace() {
       this.socketInGroup && (
         this.socketInGroup.close(),
         this.socketInGroup = ""
@@ -41,6 +24,14 @@ export default {
         this.socketInFace.close(),
         this.socketInFace = ""
       )
+    },
+    // 断开websocket连接
+    disConnect() {
+      this.$setMemorySes('user', "")
+      this.disConnectGroupAndFace()
+      clearInterval(this.timer_1)
+      clearTimeout(this.timer_2)
+      this.$router.push({ path: "/login" })
     },
     // 存储聊天记录
     sendRecord(type) {
@@ -51,11 +42,11 @@ export default {
           content: this.editor.txt.html(),
           recipient: this.chatObj.username,
           senderusername: this.user.username,
-          sendername: this.user.name, 
+          sendername: this.user.name,
           avatar: this.user.avatar,
           createtime: this.sendTime,
           mapkey: this.isGroup ? "" : `${Number(this.user.key) + Number(this.chatObj.key)}`,
-          key: new Date(this.sendTime).getTime(),
+          key: new Date(this.sendTime.replace(/-/g, "/")).getTime(),
           type: type,
         }
       }).then(result => {
@@ -167,7 +158,7 @@ export default {
             recipient: 'group',
             type: "group",
             createtime: this.sendTime,
-            key: new Date(this.sendTime).getTime()
+            key: new Date(this.sendTime.replace(/-/g, "/")).getTime()
           }))
         } else {
           this.socketInFace.send(JSON.stringify({
@@ -178,7 +169,7 @@ export default {
             recipient: this.chatObj.username,
             type: "face",
             createtime: this.sendTime,
-            key: new Date(this.sendTime).getTime()
+            key: new Date(this.sendTime.replace(/-/g, "/")).getTime()
           }))
         }
         this.sendRecord(this.isGroup ? 'group' : 'face')
@@ -223,7 +214,7 @@ export default {
         recipient: this.chatObj.username,
         type: "withdraw",
         createtime: this.sendTime,
-        key: new Date(this.sendTime).getTime()
+        key: new Date(this.sendTime.replace(/-/g, "/")).getTime()
       }
       this.isGroup
         ? (
@@ -242,7 +233,7 @@ export default {
         name: '群聊',
         username: '群聊'
       }
-      this.disConnect()
+      this.disConnectGroupAndFace()
       if (window.WebSocket) {
         this.socketInGroup = new WebSocket(`${websocketInGroupUrl}${uid}`)
         this.socketInGroup.onopen = e => {
@@ -257,7 +248,7 @@ export default {
               this.widthdrawSender = ""
             })();
           } else {
-            this.willSendContentList.push(JSON.parse(e.data))
+            this.willSendContentList.push(data)
           }
           this.$nextTick(() => {
             this.initialChatHeight()
@@ -277,7 +268,7 @@ export default {
     connectWebsocketInFace(item) {
       this.chatObj = item
       this.isGroup = false
-      this.disConnect()
+      this.disConnectGroupAndFace()
       if (window.WebSocket) {
         this.socketInFace = new WebSocket(`${websocketInFaceUrl}${Number(this.user.key) + Number(this.chatObj.key)}`)
         this.socketInFace.onopen = e => {
@@ -292,7 +283,7 @@ export default {
               this.widthdrawSender = ""
             })();
           } else {
-            this.willSendContentList.push(JSON.parse(e.data))
+            this.willSendContentList.push(data)
           }
           this.$nextTick(() => {
             this.initialChatHeight()
