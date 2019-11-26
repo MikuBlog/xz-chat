@@ -23,7 +23,7 @@
 :heavy_check_mark: 用户意外退出检测<br/>
 :heavy_check_mark: 单账号同时在线检测<br/>
 :heavy_check_mark: 聊天数据实时保存与展示<br/>
-:heavy_check_mark: 浏览器类型检测（由于IE浏览器对数据渲染存在问题，暂停IE浏览器对本项目的访问）<br/>
+:heavy_check_mark: 浏览器类型检测（由于IE浏览器对Websocket的支持有限，暂停IE浏览器对本项目的访问）<br/>
 
 ## 语言
 
