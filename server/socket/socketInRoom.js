@@ -66,6 +66,7 @@ function server(ws, req) {
         // 客户端主动发出踢出信息，直接清除用户信息
         if (type === 'tick') {
           onlineUserList.splice(i, 1)
+          // 防止遍历报错
           break
         }
         // 服务端检测用户重复登录，服务端主动踢出用户（挤掉另一端用户）

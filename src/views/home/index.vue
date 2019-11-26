@@ -56,6 +56,7 @@
             >
               <el-popover placement="left" :title="items.name" width="200" trigger="hover">
                 <div class="customer-profix">
+                  <div class="detail">账号：{{ items.username }}</div>
                   <div class="detail">年龄：{{ items.age }}</div>
                   <div class="detail">电话：{{ items.phone }}</div>
                   <div class="detail">邮箱：{{ items.email }}</div>
@@ -76,6 +77,7 @@
             >
               <el-popover placement="left" :title="items.name" width="200" trigger="hover">
                 <div class="customer-profix">
+                  <div class="detail">账号：{{ items.username }}</div>
                   <div class="detail">年龄：{{ items.age }}</div>
                   <div class="detail">电话：{{ items.phone }}</div>
                   <div class="detail">邮箱：{{ items.email }}</div>
@@ -101,7 +103,7 @@
             <div
               class="list"
               v-for="items in ExistingContentList"
-              :keys="items._id"
+              :key="items._id"
               :style="{
               textAlign: items.senderusername !== user.username ? 'left' : 'right',
               display: 'flex',
@@ -153,7 +155,6 @@
             <div
               class="list"
               v-for="items in willSendContentList"
-              :keys="items._id"
               :style="{
               textAlign: items.senderusername !== user.username ? 'left' : 'right',
               display: 'flex',

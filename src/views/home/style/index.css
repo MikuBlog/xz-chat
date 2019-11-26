@@ -163,8 +163,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 65%;
-  max-height: 65%;
+  height: 65%;
 }
 
 .right-list .content-list .background-opacity, .right-list .content-list .background-mask {
@@ -245,9 +244,7 @@
 
 .right-list .input-box {
   position: relative;
-  overflow: hidden;
-  min-height: 25%;
-  max-height: 25%;
+  height: 25%;
 }
 
 .right-list .input-box .submit {

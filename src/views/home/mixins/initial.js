@@ -9,6 +9,8 @@ export default {
   },
   created() {
     document.title = "聊天室"
+    // 判断是否为IE浏览器
+    this.justifyAgent()
     // 初始化用户信息
     this.getUserMsg()
   },
@@ -19,6 +21,13 @@ export default {
     this.initialListener()
   },
   methods: {
+    // 判断浏览器类型
+    justifyAgent() {
+      this.$isIE && (
+        this.$warnMsg("请勿使用IE浏览器运行本系统"),
+        this.$router.push({ path: '/login' })
+      )
+    },
     // 初始化富文本编辑器
     initialEditor() {
       const

@@ -65,7 +65,8 @@ export default {
         age: "",
         phone: "",
         email: "",
-        password: ""
+        password: "",
+        checkPass: ""
       },
       rules: {
         name: [{ required: true, message: "名称不能为空", trigger: "blur" }],

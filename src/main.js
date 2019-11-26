@@ -9,6 +9,8 @@ import {
 } from 'view-design'
 // 引入jquery模块
 import $ from 'jquery'
+// 判断浏览器的类型
+import Agent from '@/api/other/agent'
 // 引入图片剪裁组件
 import VueCropper from 'vue-cropper'
 // 引入全局提示模块
@@ -43,6 +45,12 @@ import ImageLoad from '@/api/other/image_load'
 import SortList from '@/api/other/sort'
 // 引入全局配置模块
 import DefaultConfig from '@/global/js/config'
+/**
+ * @author xuanzai
+ * @description 引入全局提示
+ * @param {String} msg 提示内容
+ */
+Vue.prototype.$isIE = Agent.isIE
 /**
  * @author xuanzai
  * @description 引入时间格式化函数

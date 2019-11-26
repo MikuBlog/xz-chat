@@ -68,6 +68,7 @@ export default {
     // 获取头像
     getAvatar() {
       this.$getImgFile(2).then(result => {
+        console.log(result)
         this.options.img = result.url;
       });
     },
