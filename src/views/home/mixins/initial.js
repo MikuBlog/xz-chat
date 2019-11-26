@@ -9,8 +9,6 @@ export default {
   },
   created() {
     document.title = "聊天室"
-    // 判断是否为IE浏览器
-    this.justifyAgent()
     // 初始化用户信息
     this.getUserMsg()
   },
@@ -21,13 +19,6 @@ export default {
     this.initialListener()
   },
   methods: {
-    // 判断浏览器类型
-    justifyAgent() {
-      this.$isIE && (
-        this.$warnMsg("请勿使用IE浏览器运行本系统"),
-        this.$router.push({ path: '/login' })
-      )
-    },
     // 初始化富文本编辑器
     initialEditor() {
       const
@@ -90,17 +81,17 @@ export default {
           this.isonline = true
           this.user.type = "online"
           this.socketInRoom.send(JSON.stringify(this.user))
-        } 
+        }
         this.socketInRoom.onmessage = e => {
           const data = JSON.parse(e.data)
-          if(data.type === 'isheartbeat') {
+          if (data.type === 'isheartbeat') {
             this.user.type = 'isheartbeat'
             this.socketInRoom.send(JSON.stringify(this.user))
           }
-          if(data.type === 'getlist') {
+          if (data.type === 'getlist') {
             this.initialUserList(data.onlineUserList, data.outlineUserList)
           }
-          if(data.type === 'isonline') {
+          if (data.type === 'isonline') {
             this.$router.push({ path: '/login' })
             this.$warnMsg("账号重复登录，已被踢出")
           }
@@ -117,15 +108,15 @@ export default {
     },
     // 初始化监听器
     initialListener() {
-      const 
+      const
         viewScroll = document.querySelectorAll('.el-scrollbar__wrap')[1],
         w_e_text = document.querySelector('.w-e-text')
       viewScroll.addEventListener('scroll', e => {
         if (viewScroll.scrollTop == 0) {
           this.page++
-          this.isGroup 
-          ? this.continueToGetGroupRecordList()
-          : this.continueToGetRecordList()
+          this.isGroup
+            ? this.continueToGetGroupRecordList()
+            : this.continueToGetRecordList()
         }
       })
       window.onbeforeunload = () => {
@@ -149,6 +140,12 @@ export default {
     getUserMsg() {
       if (!this.$getMemorySes('user')) {
         this.$router.push({ path: '/login' })
+        return
+      }
+      if (this.$isIE()) {
+        this.$warnMsg("请勿使用IE浏览器运行本系统")
+        this.$router.push({ path: '/login' })
+        return
       }
       this.$.ajax({
         url: `${requestUrl}/api/user/getusermsg?username=${this.$getMemorySes('user').username}`,
