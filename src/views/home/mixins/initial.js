@@ -135,7 +135,7 @@ export default {
             : this.continueToGetRecordList()
         }
       })
-      window.onbeforeunload = () => {
+      window.onunload = () => {
         this.socketInRoom.close()
       };
       w_e_text.addEventListener('keypress', (e) => {
