@@ -10,7 +10,7 @@ function register(req, res) {
     })
     return
   }
-  if(data.username.length > 10) {
+  if (data.username.length > 10) {
     res.send({
       status: "error",
       msg: "用户名称长度不能超过10个字符"
@@ -26,35 +26,31 @@ function register(req, res) {
         { username: data.username },
         (err, result) => {
           if (err) {
-            res.send({
-              status: "error",
-              msg: "服务器出错"
-            })
+            reject("服务器出错")
           } else if (result.length > 0) {
-            reject()
+            reject('账号已被注册')
           } else {
             resolve()
           }
         }
       )
   }).then(() => {
-    accountSchema.create(data, err => {
-      if (err) {
-        res.send({
-          status: "error",
-          msg: "服务器出错"
-        })
-      } else {
-        res.send({
-          status: "ok",
-          msg: "注册成功"
-        })
-      }
+    return new Promise((resolve, reject) => {
+      accountSchema.create(data, err => {
+        if (err) {
+          reject("服务器出错")
+        } else {
+          res.send({
+            status: "ok",
+            msg: "注册成功"
+          })
+        }
+      })
     })
-  }).catch(() => {
+  }).catch(e => {
     res.send({
       status: "error",
-      msg: "账号已存在"
+      msg: e
     })
   })
 }
@@ -69,46 +65,24 @@ function login(req, res) {
     })
     return
   }
-  new Promise((resolve, reject) => {
-    accountSchema
-      .find(
-        { username: data.username, password: data.password },
-        (err, result) => {
-          if (err) {
-            reject("服务器出错")
-          } else if (result.length > 0) {
-            resolve(result[0])
-          } else {
-            reject("账号、密码错误或已经登录")
-          }
+  accountSchema
+    .find(
+      { username: data.username, password: data.password },
+      (err, result) => {
+        if (err) {
+          reject("服务器出错")
+        } else {
+          res.send({
+            status: "ok",
+            msg: "登录成功",
+            data: result[0]
+          })
         }
-      )
-  }).then((result) => {
-    accountSchema
-      .updateOne(
-        { username: data.username },
-        { $set: { isonline: true } },
-        err => {
-          if (err) {
-            reject("服务器出错")
-          } else {
-            res.send({
-              status: "ok",
-              msg: "登录成功",
-              data: result
-            })
-          }
-        }
-      )
-  }).catch(e => {
-    res.send({
-      status: "error",
-      msg: e
-    })
-  })
+      }
+    )
 }
 
-// 用户登出
+// 用户登出(废弃)
 function logout(req, res) {
   const data = req.urlQuery
   if (!data.username) {
