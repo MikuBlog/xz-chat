@@ -250,16 +250,16 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: "账号不能为空", trigger: "blur" },
-          { min: 2, max: 21, message: "账号长度在2到20个字符", trigger: "blur" }
+          { required: true, message: "账号不能为空", trigger: "change" },
+          { min: 2, max: 21, message: "账号长度在2到20个字符", trigger: "change" }
         ],
-        password: [{ validator: validatePass, trigger: "change" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        age: [{ required: true, trigger: "blur" }],
+        password: [{ required: true, message: "密码不能为空", trigger: "change" }],
+        checkPass: [{ validator: validatePass2, trigger: "change" }],
+        age: [{ required: true, message: "年龄不能为空", trigger: "change" }],
         phone: [{ required: true, trigger: "blur", validator: validPhone }],
         email: [
-          { required: true, message: "请输入邮箱地址", trigger: "blur" },
-          { type: "email", message: "请输入正确的邮箱地址", trigger: "blur" }
+          { required: true, message: "请输入邮箱地址", trigger: "change" },
+          { type: "email", message: "请输入正确的邮箱地址", trigger: "change" }
         ]
       }
     };
