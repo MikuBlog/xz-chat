@@ -34,15 +34,7 @@
                 v-model="ruleForm.password"
                 prefix-icon="el-icon-lock"
                 placeholder="请输入密码"
-              ></el-input><span v-if="ruleForm.password" style="position: absolute; right: -23px; color: red;">{{ power === 0 
-                ? '弱' 
-                : power === 1
-                ? '弱'
-                : power === 2
-                ? '中'
-                : power === 3
-                ? '强'
-                : '强' }}</span>
+              ></el-input>
             </el-form-item>
             <el-form-item prop="checkPass" class="form-item">
               <el-input
