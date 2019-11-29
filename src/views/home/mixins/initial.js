@@ -163,6 +163,11 @@ export default {
         this.$router.push({ path: '/login' })
         return
       }
+      if(this.$isMobile()) {
+        this.$warnMsg("请勿使用移动设备运行本系统")
+        this.$router.push({ path: '/login' })
+        return
+      }
       this.$.ajax({
         url: `${requestUrl}/api/user/getusermsg?username=${this.$getMemorySes('user').username}`,
         type: "get"

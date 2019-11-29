@@ -51,6 +51,7 @@ import DefaultConfig from '@/global/js/config'
  * @param {String} msg 提示内容
  */
 Vue.prototype.$isIE = Agent.isIE
+Vue.prototype.$isMobile = Agent.isMobile
 /**
  * @author xuanzai
  * @description 引入时间格式化函数
