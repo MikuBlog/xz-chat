@@ -70,12 +70,20 @@ function login(req, res) {
       { username: data.username, password: data.password },
       (err, result) => {
         if (err) {
-          reject("服务器出错")
-        } else {
+          res.send({
+            status: "error",
+            msg: "服务器出错"
+          })
+        }else if(result.length > 0) {
           res.send({
             status: "ok",
             msg: "登录成功",
             data: result[0]
+          })
+        } else {
+          res.send({
+            status: "error",
+            msg: "账号或密码错误"
           })
         }
       }
